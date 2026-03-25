@@ -286,7 +286,7 @@ def db_posts(mention=None):
     db = get_db()
     if not db: return []
     q = db.query(Post)
-    if mention: q = q.filter(Post.mentions.contains(mention))
+    if mention: q = q.filter(Post.mentions.cast(String).ilike(f'%{mention}%'))
     posts = q.order_by(Post.impressions.desc()).all()
     db.close()
     return posts
