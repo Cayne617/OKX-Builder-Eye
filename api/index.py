@@ -132,7 +132,7 @@ def parse_and_import(crm_bytes: bytes, gsheet_bytes: bytes = None):
     if gsheet_bytes:
         gdf = pd.read_excel(io.BytesIO(gsheet_bytes))
         for _, r in gdf.iterrows():
-            h = str(r.get('推特ID','')).strip().replace('@','').replace(' ','').replace('\u200b','')
+            h = str(r.get('推特ID','')).strip().replace('@','')
             if not h: continue
             gsheet_map[h.lower()] = {
                 'nick': str(r.get('推特昵称','')) if pd.notna(r.get('推特昵称')) else '',
@@ -202,6 +202,7 @@ def parse_and_import(crm_bytes: bytes, gsheet_bytes: bytes = None):
     db.execute(text("DELETE FROM posts"))
     db.execute(text("DELETE FROM kols"))
 
+    imported_handles = set()
     for h, info in kol_map.items():
         gs = gsheet_map.get(h.lower(), {})
         kol = KOL(
@@ -221,12 +222,32 @@ def parse_and_import(crm_bytes: bytes, gsheet_bytes: bytes = None):
         )
         kol.score = calc_score(kol)
         db.add(kol)
+        imported_handles.add(h.lower())
+
+    # Also import GSheet KOLs not in CRM this week (0 tweets but still partners)
+    for h_lower, gs in gsheet_map.items():
+        if h_lower not in imported_handles:
+            display_h = gs.get('nick','') or h_lower
+            kol = KOL(
+                handle=h_lower, nickname=gs.get('nick',''), bd='',
+                tier=gs.get('tier',''), cost=gs.get('cost',0), avg_price=gs.get('avg_price',0),
+                followers=gs.get('followers',0),
+                okx_tweets=0, okx_impressions=0, bn_tweets=0, bn_impressions=0,
+                total_tweets=0, total_impressions=0,
+                okx_pos=0, okx_neg=0, okx_neu=0,
+                tags=['综合'], products=[],
+                is_partner=True, is_official=False,
+                wallet_address=gs.get('wallet',''),
+                week_date=week_date,
+            )
+            kol.score = calc_score(kol)
+            db.add(kol)
 
     for p in posts_data:
         db.add(Post(**p))
 
     db.commit()
-    partner_count = sum(1 for h in kol_map if h.lower() in gsheet_map)
+    partner_count = sum(1 for h in imported_handles if h in gsheet_map) + sum(1 for h in gsheet_map if h not in imported_handles)
     db.close()
     return {"kols": len(kol_map), "posts": len(posts_data), "partners": partner_count, "week": week_date}
 
@@ -286,7 +307,7 @@ def db_posts(mention=None):
     db = get_db()
     if not db: return []
     q = db.query(Post)
-    if mention: q = q.filter(Post.mentions.cast(String).ilike(f'%{mention}%'))
+    if mention: q = q.filter(Post.mentions.contains(mention))
     posts = q.order_by(Post.impressions.desc()).all()
     db.close()
     return posts
