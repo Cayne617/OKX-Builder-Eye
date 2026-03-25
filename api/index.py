@@ -132,7 +132,7 @@ def parse_and_import(crm_bytes: bytes, gsheet_bytes: bytes = None):
     if gsheet_bytes:
         gdf = pd.read_excel(io.BytesIO(gsheet_bytes))
         for _, r in gdf.iterrows():
-            h = str(r.get('推特ID','')).strip().replace('@','')
+            h = str(r.get('推特ID','')).strip().replace('@','').replace(' ','').replace('\u200b','')
             if not h: continue
             gsheet_map[h.lower()] = {
                 'nick': str(r.get('推特昵称','')) if pd.notna(r.get('推特昵称')) else '',
