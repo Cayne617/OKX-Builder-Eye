@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>OKX Builder Eye v5.0</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&family=Noto+Sans+SC:wght@300;400;500;700;900&display=swap');
+:root{--bg:#0a0a0f;--bg2:#12121a;--bg3:#1a1a28;--bg4:#222236;--brd:#2a2a42;--tx:#e8e8f0;--tx2:#9898b0;--tx3:#6868a0;--acc:#00d4aa;--wrn:#ff6b6b;--blu:#4dabf7;--pur:#a78bfa;--gld:#ffd43b;--bn:#f0b90b}
+*{margin:0;padding:0;box-sizing:border-box}body{background:var(--bg);color:var(--tx);font-family:'Noto Sans SC',sans-serif;overflow-x:hidden}
+::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:var(--bg2)}::-webkit-scrollbar-thumb{background:var(--brd);border-radius:3px}
+.hd{background:linear-gradient(135deg,var(--bg2),#0d1520);border-bottom:1px solid var(--brd);padding:14px 24px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:100;flex-wrap:wrap;gap:8px}
+.hd-l{display:flex;align-items:center;gap:12px}
+.logo{width:36px;height:36px;background:linear-gradient(135deg,var(--acc),var(--blu));border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:17px;font-weight:900;color:var(--bg)}
+.hd h1{font-size:19px;font-weight:700}.hd h1 span{color:var(--acc)}
+.hd-meta{font-size:10px;color:var(--tx3);font-family:'JetBrains Mono'}
+.nav{display:flex;gap:3px;background:var(--bg2);padding:4px;border-radius:10px;border:1px solid var(--brd);flex-wrap:wrap}
+.nb{padding:6px 14px;border-radius:7px;background:transparent;color:var(--tx2);border:none;cursor:pointer;font-size:11px;font-weight:500;font-family:'Noto Sans SC';transition:all .2s;white-space:nowrap}
+.nb:hover{color:var(--tx);background:var(--bg3)}.nb.on{background:var(--acc);color:var(--bg);font-weight:700}
+.sr{display:grid;grid-template-columns:repeat(6,1fr);gap:10px;padding:14px 24px}
+.sc{background:var(--bg2);border:1px solid var(--brd);border-radius:12px;padding:12px 14px;transition:all .3s}
+.sc:hover{border-color:var(--acc);transform:translateY(-2px)}
+.sl{font-size:9px;color:var(--tx3);text-transform:uppercase;letter-spacing:1px;margin-bottom:3px}
+.sv{font-size:22px;font-weight:700;font-family:'JetBrains Mono'}.ss{font-size:9px;color:var(--tx2);margin-top:2px}
+.sg{color:var(--acc)}.sgl{color:var(--gld)}.sr_{color:var(--wrn)}.sb{color:var(--blu)}.sp{color:var(--pur)}
+.ct{padding:0 24px 24px}.sec{display:none}.sec.on{display:block}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px}
+.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:12px}
+.g23{display:grid;grid-template-columns:2fr 1fr;gap:12px;margin-bottom:12px}
+.cd{background:var(--bg2);border:1px solid var(--brd);border-radius:14px;padding:16px;overflow:hidden}
+.ct_{font-size:12px;font-weight:600;margin-bottom:12px;display:flex;align-items:center;gap:6px}
+.tbl{width:100%;border-collapse:collapse;font-size:11px}
+.tbl th{text-align:left;padding:6px 8px;color:var(--tx3);font-weight:500;border-bottom:1px solid var(--brd);font-size:9px;text-transform:uppercase;letter-spacing:.5px;position:sticky;top:0;background:var(--bg2);z-index:1}
+.tbl td{padding:5px 8px;border-bottom:1px solid rgba(42,42,66,.3);white-space:nowrap}
+.tbl tr:hover td{background:rgba(0,212,170,.04)}
+.tw{max-height:400px;overflow-y:auto}
+.tag{display:inline-block;padding:2px 6px;border-radius:4px;font-size:8px;font-weight:600;margin:1px}
+.t-撸毛{background:#ff922b22;color:#ff922b}.t-AI{background:#845ef722;color:#845ef7}.t-DEX{background:#20c99722;color:#20c997}.t-Meme{background:#ff6b6b22;color:#ff6b6b}.t-DeFi{background:#4dabf722;color:#4dabf7}.t-链上{background:#00d4aa22;color:#00d4aa}.t-交易{background:#ffd43b22;color:#ffd43b}.t-市场{background:#69db7c22;color:#69db7c}.t-教程{background:#748ffc22;color:#748ffc}.t-安全{background:#ff878722;color:#ff8787}.t-综合{background:#868e9622;color:#868e96}
+.br{display:flex;align-items:center;gap:8px;margin-bottom:4px}.bl{font-size:10px;color:var(--tx2);text-align:right;flex-shrink:0}
+.bt{flex:1;height:20px;background:var(--bg3);border-radius:5px;overflow:hidden}.bf{height:100%;border-radius:5px;display:flex;align-items:center;padding-left:6px;font-size:9px;font-weight:600;color:var(--bg);min-width:fit-content;transition:width .8s}
+.bf.o{background:linear-gradient(90deg,var(--acc),#00b894)}.bf.b{background:linear-gradient(90deg,var(--bn),#e0a800)}
+.fl{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px;align-items:center}
+.fb{padding:4px 10px;border-radius:5px;background:var(--bg3);color:var(--tx2);border:1px solid var(--brd);cursor:pointer;font-size:10px;font-family:'Noto Sans SC';transition:all .2s}
+.fb:hover{border-color:var(--acc);color:var(--tx)}.fb.on{background:var(--acc);color:var(--bg);border-color:var(--acc);font-weight:600}
+.si{padding:5px 10px;border-radius:5px;background:var(--bg3);color:var(--tx);border:1px solid var(--brd);font-size:11px;font-family:'JetBrains Mono';width:180px;outline:none}.si:focus{border-color:var(--acc)}
+a.kl{color:var(--blu);text-decoration:none;font-weight:600}a.kl:hover{text-decoration:underline}
+a.pl{color:var(--tx2);text-decoration:none;font-size:10px}a.pl:hover{color:var(--acc)}
+.sbdg{display:inline-flex;align-items:center;justify-content:center;width:34px;height:18px;border-radius:4px;font-size:9px;font-weight:700;font-family:'JetBrains Mono'}
+.sbdg-h{background:rgba(0,212,170,.2);color:var(--acc)}.sbdg-m{background:rgba(255,212,59,.2);color:var(--gld)}.sbdg-l{background:rgba(255,107,107,.2);color:var(--wrn)}
+.st{display:inline-block;padding:2px 7px;border-radius:10px;font-size:8px;font-weight:600}
+.st-a{background:rgba(0,212,170,.15);color:var(--acc)}.st-w{background:rgba(255,212,59,.15);color:var(--gld)}.st-d{background:rgba(255,107,107,.15);color:var(--wrn)}.st-n{background:rgba(77,171,247,.15);color:var(--blu)}
+.abox{background:var(--bg3);border:1px solid var(--brd);border-radius:10px;padding:14px;margin-bottom:10px;position:relative;min-height:60px}
+.abox::before{content:'🤖';position:absolute;top:-8px;left:10px;background:var(--bg2);padding:0 5px;font-size:11px}
+.abox .al{color:var(--tx3);font-size:11px;font-style:italic}.abox .ar{font-size:11px;color:var(--tx);line-height:1.6;white-space:pre-wrap}
+.btn{padding:7px 14px;border-radius:7px;border:none;cursor:pointer;font-size:11px;font-weight:600;font-family:'Noto Sans SC';transition:all .2s}
+.btn-p{background:var(--acc);color:var(--bg)}.btn-p:hover{background:#00b894}
+.btn-s{background:var(--bg3);color:var(--tx);border:1px solid var(--brd)}.btn-s:hover{border-color:var(--acc)}
+.btn-ai{background:linear-gradient(135deg,var(--pur),var(--blu));color:#fff}.btn-ai:hover{transform:translateY(-1px)}
+.fb_{padding:6px 14px;border-radius:7px;background:linear-gradient(135deg,#4dabf7,#748ffc);color:#fff;border:none;cursor:pointer;font-size:11px;font-weight:600;font-family:'Noto Sans SC'}
+.opg{display:flex;align-items:center;gap:8px}.opb{flex:1;height:8px;background:var(--bg3);border-radius:4px;overflow:hidden}.opf{height:100%;background:linear-gradient(90deg,var(--pur),var(--acc));border-radius:4px;transition:width .6s}
+.toast{position:fixed;bottom:20px;right:20px;background:var(--bg3);border:1px solid var(--acc);color:var(--tx);padding:10px 16px;border-radius:8px;font-size:12px;z-index:999;display:none;box-shadow:0 8px 24px rgba(0,0,0,.4)}.toast.show{display:block}
+.dot{display:inline-block;width:7px;height:7px;border-radius:50%}.dot-p{background:#00d4aa}.dot-n{background:#ff6b6b}.dot-u{background:#868e96}
+.modal-ov{position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:200;display:none;align-items:center;justify-content:center}.modal-ov.show{display:flex}
+.modal{background:var(--bg2);border:1px solid var(--brd);border-radius:16px;padding:22px;width:90%;max-width:560px;max-height:80vh;overflow-y:auto}
+.modal h3{font-size:15px;font-weight:700;margin-bottom:14px}
+select.si{cursor:pointer}
+@media(max-width:1200px){.sr{grid-template-columns:repeat(3,1fr)}.g2,.g23{grid-template-columns:1fr}.g3{grid-template-columns:1fr 1fr}}
+@media(max-width:768px){.sr{grid-template-columns:repeat(2,1fr)}.g3{grid-template-columns:1fr}.hd{padding:10px 12px}.ct{padding:0 12px 12px}}
+</style>
+</head>
+<body>
+<div class="hd">
+<div class="hd-l"><div class="logo">B</div><div><h1>OKX Builder <span>Eye</span> v5.0</h1><div class="hd-meta">2026-03-30→04-05 · 111 合作KOL + 87 候选 · Phase 3</div></div></div>
+<div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+<nav class="nav">
+<button class="nb on" onclick="go('ov')">📊 总览</button>
+<button class="nb" onclick="go('kol')">👥 合作KOL</button>
+<button class="nb" onclick="go('prod')">🛠 产品</button>
+<button class="nb" onclick="go('disc')">🔭 发现</button>
+<button class="nb" onclick="go('orb')">🪐 Orbit</button>
+<button class="nb" onclick="go('conv')">📊 转化</button>
+</nav>
+<button class="fb_" onclick="pushFeishu()">📮 飞书</button>
+</div>
+</div>
+
+<div class="sr" id="SR"></div>
+<div class="ct">
+
+<!-- TAB 1: Overview -->
+<div class="sec on" id="s-ov">
+<div class="g23">
+<div class="cd"><div class="ct_">📊 OKX vs Binance 提及对比</div><div id="cmpBar"></div></div>
+<div class="cd"><div class="ct_">📅 每日OKX趋势</div><div id="dailyC"></div></div>
+</div>
+<div class="g2">
+<div class="cd"><div class="ct_">🏆 OKX TOP KOL</div><div class="tw" id="okxTop"></div></div>
+<div class="cd"><div class="ct_">🔥 OKX 热门推文 <span style="font-weight:400;color:var(--tx3)">(点击跳转原文)</span></div><div class="tw" id="okxPosts"></div></div>
+</div>
+<div class="g2">
+<div class="cd"><div class="ct_" style="color:var(--bn)">💛 Binance TOP KOL <span style="font-weight:400;color:var(--tx3)">— 发现竞对合作机会</span></div><div class="tw" id="bnTop"></div></div>
+<div class="cd"><div class="ct_" style="color:var(--bn)">💛 Binance 热门推文</div><div class="tw" id="bnPosts"></div></div>
+</div>
+<div class="g3">
+<div class="cd"><div class="ct_">😊 情感分布</div><div id="sentC"></div></div>
+<div class="cd"><div class="ct_">🏷 赛道标签</div><div id="tagC"></div></div>
+<div class="cd"><div class="ct_">📦 产品速览</div><div id="prodQ"></div></div>
+</div>
+</div>
+
+<!-- TAB 2: 合作KOL (merged CRM+Builder+BD) -->
+<div class="sec" id="s-kol">
+<div class="g23">
+<div class="cd">
+<div class="ct_">👥 合作 KOL 管理 (<span id="kolN">156</span>)</div>
+<div class="fl">
+<input class="si" placeholder="🔍 搜索..." oninput="rKol()" id="kS">
+<select class="si" style="width:130px" id="kBD" onchange="rKol()"><option value="all">全部BD</option></select>
+<select class="si" style="width:110px" id="kTag" onchange="rKol()"><option value="all">全赛道</option></select>
+<select class="si" style="width:110px" id="kSort" onchange="rKol()">
+<option value="okx_i">OKX曝光↓</option><option value="score">绩效分↓</option><option value="okx_t">OKX条数↓</option><option value="bn_t">BN条数↓</option>
+</select>
+<button class="btn btn-ai" onclick="aiBuilder()">🤖 AI 淘汰分析</button>
+</div>
+<div class="tw" id="kolTbl" style="max-height:520px"></div>
+</div>
+<div>
+<div class="cd" style="margin-bottom:12px">
+<div class="ct_">📊 本周各渠道 OKX 内容概览</div>
+<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:14px">
+<div style="background:var(--bg3);border-radius:8px;padding:12px"><div style="font-size:11px;font-weight:700;margin-bottom:10px">OKX 推文数量</div><div id="bdChartTw"></div></div>
+<div style="background:var(--bg3);border-radius:8px;padding:12px"><div style="font-size:11px;font-weight:700;margin-bottom:10px">OKX 推文曝光量</div><div id="bdChartImp"></div></div>
+<div style="background:var(--bg3);border-radius:8px;padding:12px"><div style="font-size:11px;font-weight:700;margin-bottom:10px">覆盖博主数量</div><div id="bdChartKol"></div></div>
+</div>
+<div style="font-size:10px;font-weight:600;margin-bottom:6px">OKX vs Binance 曝光对比</div>
+<div id="bdBar"></div>
+</div>
+<div class="cd">
+<div class="ct_">⚠️ 异常告警</div>
+<div id="alerts"></div>
+</div>
+<div class="cd" style="margin-top:12px">
+<div class="ct_">🤖 AI 分析</div>
+<div class="abox" id="aiB"><div class="al">点击「AI淘汰分析」获取绩效洞察...</div></div>
+</div>
+</div>
+</div>
+</div>
+
+<!-- TAB 3: Products -->
+<div class="sec" id="s-prod">
+<div class="g3" id="prodGrid"></div>
+<div class="cd"><div class="ct_">📋 产品 × KOL 明细</div><div class="tw" id="prodTbl" style="max-height:460px"></div></div>
+</div>
+
+<!-- TAB 4: Discover -->
+<div class="sec" id="s-disc">
+<div class="g23">
+<div class="cd">
+<div class="ct_">🔭 发现候选：CRM 中非合作 KOL + Binance 高权重 — 建立合作</div>
+<div class="fl">
+<select class="si" style="width:120px" id="dSort" onchange="rDisc()">
+<option value="total">总曝光↓</option><option value="bn_i">BN曝光↓</option><option value="bn_t">BN条数↓</option>
+</select>
+<button class="btn btn-ai" onclick="aiDiscover()">🤖 AI 推荐合作</button>
+<button class="btn btn-s" onclick="exportCSV()">📤 导出CSV</button>
+</div>
+<div class="tw" id="discTbl" style="max-height:500px"></div>
+</div>
+<div>
+<div class="cd" style="margin-bottom:12px">
+<div class="ct_">🤖 AI 合作推荐</div>
+<div class="abox" id="aiD"><div class="al">AI 将分析 Binance 高权重 KOL 中值得争取合作的候选...</div></div>
+</div>
+<div class="cd">
+<div class="ct_">📊 竞对概览</div>
+<div id="compOv"></div>
+</div>
+</div>
+</div>
+</div>
+
+<!-- TAB 5: Orbit -->
+<div class="sec" id="s-orb">
+<div class="g2">
+<div class="cd">
+<div class="ct_">🪐 Orbit 星球入驻追踪</div>
+<div style="display:flex;gap:8px;margin-bottom:12px">
+<button class="btn btn-p" onclick="showOrbitModal()">➕ 批量标记</button>
+<button class="btn btn-s" onclick="pushOrbit()">📮 推送未入驻提醒</button>
+</div>
+<div style="margin-bottom:12px"><div style="font-size:10px;color:var(--tx3);margin-bottom:4px">入驻进度</div><div class="opg"><div class="opb"><div class="opf" id="oFill" style="width:0%"></div></div><span id="oPct" style="font-size:11px;font-weight:600;color:var(--acc)">0%</span></div></div>
+<div class="tw" id="orbTbl" style="max-height:420px"></div>
+</div>
+<div class="cd">
+<div class="ct_">📜 合作条款 & AI策略</div>
+<div style="background:var(--bg3);border:1px solid var(--brd);border-radius:8px;padding:12px;font-size:10px;color:var(--tx2);line-height:1.7;margin-bottom:12px">
+<b style="color:var(--acc)">Orbit 推广条款：</b><br>
+① 合作期内完成 Orbit 入驻<br>② 每月≥2条 Orbit 推文<br>③ 推文含 Orbit 链接/截图<br>④ TOP3 额外奖金<br>⑤ 未达标扣减 10%
+</div>
+<button class="btn btn-ai" onclick="aiOrbit()" style="margin-bottom:10px">🤖 生成推广策略</button>
+<div class="abox" id="aiO"><div class="al">AI 将基于入驻率生成推广策略...</div></div>
+</div>
+</div>
+</div>
+
+<!-- TAB 6: Conversion -->
+<div class="sec" id="s-conv">
+<div class="g3">
+<div class="cd"><div class="ct_">📊 内容转化漏斗</div><div id="funnel"></div></div>
+<div class="cd"><div class="ct_">🔗 使用真实度</div><div id="realC"></div></div>
+<div class="cd"><div class="ct_">💰 ROI 框架</div><div id="roiC"></div></div>
+</div>
+<div class="g2">
+<div class="cd"><div class="ct_">📈 KOL 产品渗透率</div><div class="tw" id="penTbl" style="max-height:400px"></div></div>
+<div class="cd"><div class="ct_">🤖 AI 转化洞察</div><button class="btn btn-ai" onclick="aiConv()" style="margin-bottom:10px">🤖 分析</button><div class="abox" id="aiC"><div class="al">AI将分析产品转化效率...</div></div></div>
+</div>
+</div>
+</div>
+
+<div class="modal-ov" id="mOv" onclick="if(event.target===this)cM()"><div class="modal" id="mC"></div></div>
+<div class="toast" id="toast"></div>
+
+<script>
+const D={"partners": [["yyds123888", "张晓翠 Scarlett Zhang", 5, 307639, 4, 312488, 9, 620127, 1, 5, 3, ["AI", "Meme", "链上", "交易"], ["Onchain OS"], "A", 2000.0, 2000.0, 132648, "币圈福利哥"], ["Rocky_Bitcoin", "张晓翠 Scarlett Zhang", 5, 223575, 1, 29825, 6, 253400, 2, 2, 2, ["综合"], ["OKX合约", "OpenClaw"], "A", 3000.0, 3000.0, 62009, "Rocky"], ["WY_mask", "董家昊 Cayne Dong", 8, 207550, 1, 3499, 9, 211049, 1, 2, 6, ["综合"], ["OKX Wallet", "OKX赚币", "OKX合约"], "A", 3000.0, 750.0, 86573, "无颜 (❖,❖) | MemeMax⚡️"], ["ZF_lab", "董家昊 Cayne Dong", 5, 77572, 0, 0, 5, 77572, 0, 0, 5, ["综合"], ["OKX Wallet"], "A", 3000.0, 750.0, 107118, "追风Lab .eth🌿"], ["wenxue600", "Mercy Luo 罗斐丹", 5, 72623, 3, 64620, 8, 137243, 0, 1, 7, ["市场"], [], "A", 1300.0, 325.0, 10000, "链上达人"], ["EvaCmore", "董家昊 Cayne Dong", 5, 60694, 0, 0, 5, 60694, 0, 1, 4, ["综合"], [], "A", 2000.0, 500.0, 66978, "Eva 树姐👧🏻"], ["FLS_OTC", "张晓翠 Scarlett Zhang", 1, 51268, 1, 9117, 2, 60385, 0, 1, 1, ["综合"], [], "C", 0.0, 0.0, 101776, "福禄寿 UV DAO"], ["daidaibtc", "张晓翠 Scarlett Zhang", 1, 47241, 2, 106760, 3, 154001, 0, 1, 2, ["AI", "市场"], [], "B", 1000.0, 1000.0, 43419, "带带带比特"], ["punk2898", "Yuki He 贺羽溪", 2, 46511, 2, 46511, 4, 93022, 0, 2, 2, ["综合"], ["OKB", "OKX合约"], "B", 1000.0, 1000.0, 28937, "punk"], ["cryptolfggo", "董家昊 Cayne Dong", 5, 45176, 1, 14016, 6, 59192, 0, 3, 3, ["链上", "交易", "市场"], ["OKX合约"], "A", 2000.0, 500.0, 31231, "里奇"], ["jason_chen998", "Mercy Luo 罗斐丹", 1, 37816, 0, 0, 1, 37816, 0, 0, 1, ["AI", "DEX", "Meme", "DeFi", "链上", "交易", "市场"], [], "A", 3000.0, 3000.0, 114477, "陈剑Jason"], ["Sea_Bitcoin", "Yuki He 贺羽溪", 4, 33594, 4, 31803, 8, 65397, 0, 2, 6, ["综合"], ["OKX赚币", "OKB", "OKX合约", "OpenClaw"], "B", 1000.0, 1000.0, 50483, "SΞA 🐸"], ["yuyue_chris", "Mercy Luo 罗斐丹", 4, 33316, 5, 64729, 9, 98045, 0, 4, 5, ["DeFi", "链上", "交易", "市场"], ["OKX合约", "OpenClaw"], "S", 6000.0, 6000.0, 101333, "Yuyue"], ["AirdropAlchemis", "董家昊 Cayne Dong", 4, 32478, 4, 33936, 8, 66414, 0, 1, 7, ["综合"], ["OKX合约"], "B", 1200.0, 300.0, 25605, "炼金叔叔"], ["Bitwux", "Mercy Luo 罗斐丹", 2, 31593, 1, 22410, 3, 54003, 0, 0, 3, ["综合"], [], "S", 6000.0, 6000.0, 365684, "BITWU.ETH 🔆"], ["CryptoPainter", "张晓翠 Scarlett Zhang", 1, 30321, 1, 13067, 2, 43388, 0, 1, 1, ["综合"], [], "A", 2000.0, 2000.0, 93438, "Crypto_Painter"], ["Gummybear1771", "董家昊 Cayne Dong", 2, 28611, 1, 13791, 3, 42402, 0, 0, 3, ["综合"], [], "B", 1000.0, 1000.0, 100231, "草莓软糖"], ["isadora288881", "董家昊 Cayne Dong", 2, 26065, 2, 24222, 4, 50287, 2, 1, 1, ["AI", "链上", "交易"], ["Onchain OS"], "B", 1500.0, 500.0, 75142, "尤可欣Isadora"], ["Paris13Jeanne", "张晓翠 Scarlett Zhang", 1, 24873, 2, 9940, 3, 34813, 1, 0, 2, ["综合"], [], "A", 3000.0, 3000.0, 38989, "Jeanne"], ["lubi366", "董家昊 Cayne Dong", 2, 24599, 1, 26153, 3, 50752, 0, 1, 2, ["综合"], ["Orbit"], "A", 2000.0, 500.0, 240554, "撸币养家 | lubiyangjia.eth"], ["KuiGas", "董家昊 Cayne Dong", 2, 19423, 0, 0, 2, 19423, 0, 2, 0, ["综合"], [], "C", 6000.0, 0.0, 106806, "丰密"], ["tychozzz", "董家昊 Cayne Dong", 1, 18855, 0, 0, 1, 18855, 0, 0, 1, ["DeFi", "链上"], ["OpenClaw"], "C", 2000.0, 0.0, 65637, "Nico投资有道"], ["surpr164", "Mercy Luo 罗斐丹", 1, 18125, 1, 15564, 2, 33689, 0, 0, 2, ["AI", "交易", "市场"], [], "B", 1000.0, 1000.0, 36095, "神币 🔶 馬良"], ["0xpeas", "Yuki He 贺羽溪", 1, 17784, 0, 0, 1, 17784, 1, 0, 0, ["综合"], [], "B", 1000.0, 1000.0, 19552, "虚拟豆"], ["silverfang88", "Mercy Luo 罗斐丹", 2, 16514, 5, 88949, 7, 105463, 0, 3, 4, ["撸毛", "AI", "Meme", "DeFi", "链上", "交易", "市场", "安全"], [], "S", 5000.0, 1250.0, 25000, "子时"], ["UnicornBitcoin", "Yuki He 贺羽溪", 3, 16397, 2, 25016, 5, 41413, 0, 0, 5, ["综合"], ["OKX Wallet"], "A", 5000.0, 833.0, 55000, "UnicornBitcoin"], ["Crypto_He", "董家昊 Cayne Dong", 2, 15798, 8, 110436, 10, 126234, 0, 8, 2, ["综合"], [], "A", 3000.0, 750.0, 93947, "先知"], ["yueya_eth", "Mercy Luo 罗斐丹", 3, 15160, 4, 26042, 7, 41202, 0, 2, 5, ["综合"], ["OpenClaw"], "C", 0.0, 0.0, 48924, "yueya🦅"], ["CryptoApprenti1", "Yuki He 贺羽溪", 1, 15005, 0, 0, 1, 15005, 1, 0, 0, ["综合"], [], "A", 3000.0, 3000.0, 140709, "Dr.Hash\"Wesley\""], ["anyaoyaoa", "董家昊 Cayne Dong", 6, 13997, 12, 65928, 18, 79925, 4, 2, 12, ["综合"], [], "B", 1000.0, 250.0, 24908, "俺瑶瑶a 💢"], ["0xzhaozhao", "董家昊 Cayne Dong", 1, 13138, 5, 98296, 6, 111434, 0, 2, 4, ["链上", "交易"], [], "A", 2000.0, 500.0, 71677, "0xzhaozhao | MemeMax⚡️"], ["0xCheshire", "Mercy Luo 罗斐丹", 2, 13004, 2, 9419, 4, 22423, 1, 1, 2, ["综合"], [], "C", 500.0, 500.0, 54131, "𝘾𝙝𝙚𝙨𝙝𝙞𝙧𝙚 🦅"], ["Jiaowobaobao123", "Mercy Luo 罗斐丹", 3, 12048, 0, 0, 3, 12048, 0, 1, 2, ["综合"], [], "B", 1000.0, 1000.0, 141951, "老俞.eth"], ["monkeyjiang", "张晓翠 Scarlett Zhang", 1, 9288, 2, 24751, 3, 34039, 0, 1, 2, ["撸毛", "AI", "DeFi", "交易", "市场"], ["OKX赚币"], "B", 1000.0, 1000.0, 101065, "加密猴哥🐒"], ["BTC_Alert_", "Mercy Luo 罗斐丹", 1, 9035, 6, 104306, 7, 113341, 0, 4, 3, ["综合"], [], "S", 5000.0, 5000.0, 43474, "ALERT的会所"], ["xincctnnq", "董家昊 Cayne Dong", 2, 8612, 0, 0, 2, 8612, 0, 0, 2, ["撸毛", "AI", "链上", "交易", "市场", "教程", "安全"], [], "A", 2000.0, 2000.0, 101897, "币圈女菩萨 | Pizza披萨🍕"], ["Trader_S18", "张晓翠 Scarlett Zhang", 1, 7555, 2, 22902, 3, 30457, 1, 0, 2, ["综合"], [], "A", 3000.0, 3000.0, 59463, "TraderS | 缺德道人"], ["CoinToEarn", "董家昊 Cayne Dong", 2, 7091, 5, 35357, 7, 42448, 0, 5, 2, ["综合"], ["OpenClaw"], "A", 2000.0, 500.0, 62899, "币赚"], ["JYdmnLFG", "Mercy Luo 罗斐丹", 2, 5678, 0, 0, 2, 5678, 0, 0, 2, ["综合"], [], "C", 900.0, 180.0, 10000, "JY"], ["nine_DeFi", "Mercy Luo 罗斐丹", 1, 5420, 3, 69619, 4, 75039, 0, 3, 1, ["综合"], [], "B", 1000.0, 1000.0, 47725, "nine_"], ["Nazarick_eth", "董家昊 Cayne Dong", 1, 4438, 4, 30982, 5, 35420, 1, 2, 2, ["综合"], [], "A", 2000.0, 500.0, 44480, "安兹大人 🦅"], ["Guilin_Chen_", "Mercy Luo 罗斐丹", 1, 3997, 0, 0, 1, 3997, 0, 0, 1, ["综合"], [], "B", 1000.0, 1000.0, 37841, "陈桂林"], ["0xcrypto_max", "Mercy Luo 罗斐丹", 1, 3972, 0, 0, 1, 3972, 0, 1, 0, ["链上", "市场", "安全"], ["OKX Wallet"], "C", 600.0, 300.0, 12000, "CryptoMax"], ["bigbottle44", "张晓翠 Scarlett Zhang", 1, 3820, 3, 22528, 4, 26348, 1, 0, 3, ["市场"], [], "B", 1000.0, 1000.0, 37122, "Big bottle"], ["Xuegaogx", "董家昊 Cayne Dong", 1, 3191, 0, 0, 1, 3191, 1, 0, 0, ["综合"], [], "B", 1000.0, 250.0, 31945, "雪糕战神🍦"], ["luckybb88", "董家昊 Cayne Dong", 2, 2903, 0, 0, 2, 2903, 0, 0, 2, ["AI", "DeFi", "市场"], [], "B", 1000.0, 1000.0, 52642, "luckybb"], ["hotbabyrebao", "张晓翠 Scarlett Zhang", 1, 2818, 0, 0, 1, 2818, 0, 0, 1, ["综合"], [], "B", 1000.0, 1000.0, 71159, "Web3热宝学AI"], ["zkgoudan", "张晓翠 Scarlett Zhang", 1, 2772, 3, 20450, 4, 23222, 0, 2, 2, ["AI", "链上", "交易", "安全"], [], "B", 1000.0, 1000.0, 87296, "狗蛋"], ["alvinnn666", "Mercy Luo 罗斐丹", 2, 2724, 3, 4118, 5, 6842, 0, 1, 4, ["交易", "市场"], [], "C", 1000.0, 0.0, 37984, "神隐"], ["tyw1984", "Mercy Luo 罗斐丹", 1, 2650, 1, 60051, 2, 62701, 0, 1, 1, ["DeFi"], ["OKX赚币"], "C", 500.0, 500.0, 33831, "nanatang"], ["KeHenryA8", "董家昊 Cayne Dong", 3, 1883, 0, 0, 3, 1883, 1, 0, 2, ["综合"], ["OKX赚币"], "B", 1200.0, 300.0, 19556, "Henry A8"], ["If_wewin", "董家昊 Cayne Dong", 1, 837, 0, 0, 1, 837, 0, 0, 1, ["综合"], [], "B", 1000.0, 250.0, 6301, "𝓚𝓪𝔀𝓱𝓲魔尼"], ["ytflzyyds", "Mercy Luo 罗斐丹", 0, 0, 4, 45715, 4, 45715, 0, 3, 1, ["AI", "Meme", "链上", "交易", "教程", "安全"], [], "C", 600.0, 200.0, 275036, "以太坊老张"], ["EmberCN", "Mercy Luo 罗斐丹", 0, 0, 6, 116100, 6, 116100, 0, 0, 6, ["综合"], [], "C", 3000.0, 750.0, 35000, "余烬"], ["xxxApril_D13", "Mercy Luo 罗斐丹", 0, 0, 1, 7217, 1, 7217, 0, 0, 1, ["综合"], [], "C", 0.0, 0.0, 15665, "April"], ["roger9949", "Mercy Luo 罗斐丹", 0, 0, 1, 90519, 1, 90519, 0, 0, 1, ["综合"], [], "C", 500.0, 500.0, 28181, "Roger波杰克"], ["ai_9684xtpa", "Mercy Luo 罗斐丹", 0, 0, 10, 156157, 10, 156157, 0, 1, 9, ["AI", "DEX", "链上", "交易", "市场", "安全"], [], "B", 1000.0, 1000.0, 129543, "Ai 姨"], ["keyahayek", "张晓翠 Scarlett Zhang", 0, 0, 2, 26907, 2, 26907, 0, 2, 0, ["市场", "安全"], [], "S", 6000.0, 6000.0, 93765, "Kay Capital"], ["maik2hello", "董家昊 Cayne Dong", 0, 0, 1, 37351, 1, 37351, 0, 1, 0, ["AI", "DEX", "DeFi", "链上", "交易", "安全"], [], "A", 2000.0, 500.0, 93022, "请叫我 MaiK"], ["Haz59188", "董家昊 Cayne Dong", 0, 0, 2, 6132, 2, 6132, 0, 1, 1, ["综合"], [], "C", 1000.0, 0.0, 17153, "金笑笑"], ["CG_BRC20", "董家昊 Cayne Dong", 0, 0, 2, 30037, 2, 30037, 0, 1, 1, ["综合"], [], "B", 1500.0, 500.0, 42940, "CG ◉ #34566"], ["Ethcoin3", "董家昊 Cayne Dong", 0, 0, 8, 56271, 8, 56271, 0, 5, 3, ["综合"], [], "A", 2000.0, 500.0, 31232, "小V同学"], ["Web3Feng", "董家昊 Cayne Dong", 0, 0, 3, 67333, 3, 67333, 0, 3, 0, ["综合"], [], "A", 3000.0, 3000.0, 82322, "风无向🦅"], ["chaozuoye", "董家昊 Cayne Dong", 0, 0, 1, 11261, 1, 11261, 0, 0, 1, ["综合"], [], "B", 1200.0, 300.0, 86048, "作业借你抄"], ["connectfarm1", "张晓翠 Scarlett Zhang", 0, 0, 7, 225086, 7, 225086, 0, 4, 3, ["交易", "市场"], [], "S", 6000.0, 6000.0, 129226, "潜水观察员🇨🇳"], ["Murphychen888", "张晓翠 Scarlett Zhang", 0, 0, 1, 24411, 1, 24411, 0, 0, 1, ["综合"], [], "A", 3000.0, 3000.0, 76338, "Murphy"], ["LuYao_Trader", "", 0, 0, 0, 0, 0, 0, 0, 0, 0, ["综合"], [], "B", 1000.0, 1000.0, 90297, "路遥 | Trader"], ["hebi555", "", 0, 0, 0, 0, 0, 0, 0, 0, 0, ["链上", "安全"], [], "S", 6000.0, 6000.0, 408750, "何币"], ["bishicps", "", 0, 0, 0, 0, 0, 0, 0, 0, 0, ["综合"], [], "A", 2000.0, 500.0, 13189, "币市操盘手"], ["CryptoSociety42", "", 0, 0, 0, 0, 0, 0, 0, 0, 0, ["综合"], [], "S", 2000.0, 2000.0, 25383, "林克Clean"], ["0xJustdu", "", 0, 0, 0, 0, 0, 0, 0, 0, 0, ["综合"], [], "C", 2000.0, 0.0, 32157, "币毒"], ["0xkevin00", "", 0, 0, 0, 0, 0, 0, 0, 0, 0, ["综合"], [], "C", 500.0, 500.0, 56074, "0xkevin (🖤 , 💙)"], ["Pandachen007", "", 0, 0, 0, 0, 0, 0, 0, 0, 0, ["综合"], [], "A", 2000.0, 500.0, 2180, "Panda熊猫"], ["BroLeon", "", 0, 0, 0, 0, 0, 0, 0, 0, 0, ["综合"], [], "A", 4000.0, 4000.0, 114383, "土澳大狮兄BroLeon | 🔶BNB"], ["DtDt666", "", 0, 0, 0, 0, 0, 0, 0, 0, 0, ["综合"], [], "A", 3000.0, 3000.0, 182650, "看不懂的SOL"], ["oooooyoung", "", 0, 0, 0, 0, 0, 0, 0, 0, 0, ["综合"], [], "A", 2000.0, 500.0, 0, "ouyoung"], ["hualun", "", 0, 0, 0, 0, 0, 0, 0, 0, 0, ["综合"], [], "A", 2000.0, 500.0, 0, "花轮"], ["BitHappy", "", 0, 0, 0, 0, 0, 0, 0, 0, 0, ["综合"], [], "A", 2000.0, 500.0, 24594, "BitHappy"], ["Dp520888", "", 0, 0, 0, 0, 0, 0, 0, 0, 0, ["综合"], [], "A", 2000.0, 500.0, 98309, "Dp大鹏🔶BNB"], ["0xAllen", "", 0, 0, 0, 0, 0, 0, 0, 0, 0, ["综合"], [], "A", 2000.0, 500.0, 20204, "0xAllen"], ["LamIsRealGoat", "", 0, 0, 0, 0, 0, 0, 0, 0, 0, ["综合"], [], "A", 2000.0, 2000.0, 0, "Lam"], ["Vito_168", "", 0, 0, 0, 0, 0, 0, 0, 0, 0, ["综合"], [], "A", 2000.0, 2000.0, 43516, "Vito"], ["cloakmk", "", 0, 0, 0, 0, 0, 0, 0, 0, 0, ["综合"], [], "A", 2000.0, 2000.0, 230930, "子棋（重生版）"], ["btc_jx", "", 0, 0, 0, 0, 0, 0, 0, 0, 0, ["综合"], [], "A", 2000.0, 2000.0, 614157, "静香小姐"], ["BTCKiK", "", 0, 0, 0, 0, 0, 0, 0, 0, 0, ["综合"], [], "B", 1800.0, 1800.0, 25210, "Ripe"], ["NFTCPS", "", 0, 0, 0, 0, 0, 0, 0, 0, 0, ["综合"], [], "B", 1600.0, 400.0, 67093, "鸟哥 | 蓝鸟会🕊️"], ["anymose", "", 0, 0, 0, 0, 0, 0, 0, 0, 0, ["综合"], [], "B", 1600.0, 1600.0, 30433, "anymose 🦅"], ["Rocky_Eths", "", 0, 0, 0, 0, 0, 0, 0, 0, 0, ["综合"], [], "B", 1400.0, 350.0, 24541, "Rocky"], ["goldencicada", "", 0, 0, 0, 0, 0, 0, 0, 0, 0, ["综合"], [], "B", 1200.0, 300.0, 19706, "卷柏"], ["0xStudy", "", 0, 0, 0, 0, 0, 0, 0, 0, 0, ["综合"], [], "B", 1000.0, 250.0, 15398, "0xStudy"], ["0xTodd", "", 0, 0, 0, 0, 0, 0, 0, 0, 0, ["综合"], [], "B", 1000.0, 1000.0, 71403, "0xTodd"], ["0xCryptoFries", "", 0, 0, 0, 0, 0, 0, 0, 0, 0, ["综合"], [], "B", 1000.0, 1000.0, 11206, "去码头整点薯条"], ["0xJingleMingle", "", 0, 0, 0, 0, 0, 0, 0, 0, 0, ["综合"], [], "C", 600.0, 600.0, 27834, "JingleMingle"], ["0xLige", "", 0, 0, 0, 0, 0, 0, 0, 0, 0, ["综合"], [], "C", 500.0, 500.0, 45087, "0xLige"], ["lin_btc", "", 0, 0, 0, 0, 0, 0, 0, 0, 0, ["综合"], [], "C", 500.0, 500.0, 19186, "菠萝头🍍🔶BNB"], ["Wangduanniao", "", 0, 0, 0, 0, 0, 0, 0, 0, 0, ["综合"], [], "A", 2000.0, 500.0, 95969, "王短鸟 (长鸟版)"], ["Cato_KT", "", 0, 0, 0, 0, 0, 0, 0, 0, 0, ["综合"], [], "A", 2000.0, 2000.0, 39912, "Cato_KT"], ["zksgu", "", 0, 0, 0, 0, 0, 0, 0, 0, 0, ["综合"], [], "B", 1000.0, 1000.0, 37729, "孤鹤.hl"], ["hazenlee", "", 0, 0, 0, 0, 0, 0, 0, 0, 0, ["综合"], [], "B", 1000.0, 1000.0, 63980, "𝙃𝘼𝙕𝙀𝙉𝙇𝙀𝙀"], ["devilcatbtc", "", 0, 0, 0, 0, 0, 0, 0, 0, 0, ["综合"], [], "B", 1000.0, 1000.0, 24523, "茂茂大魔王"], ["bqjushen", "", 0, 0, 0, 0, 0, 0, 0, 0, 0, ["综合"], [], "B", 1000.0, 1000.0, 65203, "狙神Trader"], ["kunlunstar", "", 0, 0, 0, 0, 0, 0, 0, 0, 0, ["综合"], [], "B", 1000.0, 1000.0, 9428, "昆仑星"], ["sky_gpt", "", 0, 0, 0, 0, 0, 0, 0, 0, 0, ["综合"], [], "C", 500.0, 500.0, 36420, "Sky. XiaoChen（吸吸喜气版）🦅"], ["rita88", "", 0, 0, 0, 0, 0, 0, 0, 0, 0, ["综合"], [], "C", 500.0, 500.0, 24864, "Rita👻💢"], ["Crypto_Suy", "", 0, 0, 0, 0, 0, 0, 0, 0, 0, ["综合"], [], "C", 500.0, 500.0, 6471, "suy"], ["butaidongjiaoyi", "", 0, 0, 0, 0, 0, 0, 0, 0, 0, ["综合"], [], "C", 440.0, 440.0, 38732, "如果我不懂"], ["PhyrexNi", "", 0, 0, 0, 0, 0, 0, 0, 0, 0, ["综合"], [], "C", 6000.0, 0.0, 382923, "Phyrex"], ["zaijin338191", "", 0, 0, 0, 0, 0, 0, 0, 0, 0, ["综合"], [], "C", 1000.0, 0.0, 23523, "在金"], ["cishanjia", "", 0, 0, 0, 0, 0, 0, 0, 0, 0, ["综合"], [], "S", 6000.0, 0.0, 308402, "慈善家"], ["fugui8", "", 0, 0, 0, 0, 0, 0, 0, 0, 0, ["综合"], [], "C", 2000.0, 0.0, 29531, "香港王富贵"], ["liujia0224", "", 0, 0, 0, 0, 0, 0, 0, 0, 0, ["综合"], [], "S", 5000.0, 1250.0, 30000, "狂人"]], "non_partners": [["Ryu_LCat", "张晓翠 Scarlett Zhang", 5, 101579, 0, 0, 5, 101579, 1, 1, 3, ["综合"], ["OKB", "OKX赚币"], "", 0.0, 0.0, 0, ""], ["0xXIAOc", "张晓翠 Scarlett Zhang", 3, 93072, 6, 131402, 9, 224474, 0, 2, 7, ["综合"], [], "", 0.0, 0.0, 0, ""], ["FALALI812", "Yuki He 贺羽溪", 1, 78038, 2, 99120, 3, 177158, 1, 2, 0, ["综合"], [], "", 0.0, 0.0, 0, ""], ["mk66623", "张晓翠 Scarlett Zhang", 2, 66254, 4, 106804, 6, 173058, 0, 2, 4, ["综合"], [], "", 0.0, 0.0, 0, ""], ["Bqlsj2023", "张晓翠 Scarlett Zhang", 2, 63818, 5, 387417, 7, 451235, 1, 2, 4, ["综合"], ["OKX合约"], "", 0.0, 0.0, 0, ""], ["wolfyxbt", "张晓翠 Scarlett Zhang", 1, 60343, 1, 60343, 2, 120686, 0, 0, 2, ["AI"], ["OKX合约"], "", 0.0, 0.0, 0, ""], ["banbendaan", "Yuki He 贺羽溪", 1, 59537, 1, 552, 2, 60089, 0, 2, 0, ["AI", "链上", "交易", "教程"], [], "", 0.0, 0.0, 0, ""], ["0xsexybanana", "Mercy Luo 罗斐丹", 2, 46373, 4, 55000, 6, 101373, 0, 2, 4, ["综合"], ["OKX合约"], "", 0.0, 0.0, 0, ""], ["Michael_Liu93", "Mercy Luo 罗斐丹", 1, 44368, 1, 44368, 2, 88736, 0, 0, 2, ["综合"], ["OKX合约"], "", 0.0, 0.0, 0, ""], ["christianeth", "Mercy Luo 罗斐丹", 2, 43378, 3, 52801, 5, 96179, 0, 0, 5, ["综合"], ["OKX合约"], "", 0.0, 0.0, 0, ""], ["nopinduoduo", "董家昊 Cayne Dong", 2, 39462, 0, 0, 2, 39462, 0, 1, 1, ["综合"], [], "", 0.0, 0.0, 0, ""], ["BTC99M", "董家昊 Cayne Dong", 3, 38512, 5, 46707, 8, 85219, 1, 0, 7, ["综合"], ["OKX Wallet"], "", 0.0, 0.0, 0, ""], ["Wuming_Mr_", "董家昊 Cayne Dong", 1, 30064, 3, 35090, 4, 65154, 0, 3, 1, ["综合"], [], "", 0.0, 0.0, 0, ""], ["0xkingskuan", "Mercy Luo 罗斐丹", 2, 27009, 3, 30498, 5, 57507, 0, 0, 5, ["AI", "链上", "交易", "市场", "安全"], ["OKX Wallet"], "", 0.0, 0.0, 0, ""], ["chairbtc", "董家昊 Cayne Dong", 1, 23692, 3, 19634, 4, 43326, 1, 0, 3, ["撸毛", "AI", "交易", "市场"], [], "", 0.0, 0.0, 0, ""], ["MengLayer", "张晓翠 Scarlett Zhang", 1, 16266, 3, 28564, 4, 44830, 0, 4, 0, ["综合"], [], "", 0.0, 0.0, 0, ""], ["uniswap12", "Mercy Luo 罗斐丹", 3, 16130, 15, 179523, 18, 195653, 6, 3, 9, ["撸毛", "AI", "DEX", "交易", "市场", "安全"], ["OKX合约"], "", 0.0, 0.0, 0, ""], ["ccy1871", "Mercy Luo 罗斐丹", 2, 15409, 0, 0, 2, 15409, 0, 0, 2, ["综合"], ["Onchain OS"], "", 0.0, 0.0, 0, ""], ["tmel0211", "Mercy Luo 罗斐丹", 3, 14675, 1, 3076, 4, 17751, 0, 0, 4, ["AI", "DEX", "链上", "交易"], ["Agentic Wallet", "OKX Wallet", "OKX合约", "OpenClaw"], "", 0.0, 0.0, 0, ""], ["0xBeyondLee", "Mercy Luo 罗斐丹", 4, 11662, 6, 30313, 10, 41975, 0, 0, 10, ["综合"], [], "", 0.0, 0.0, 0, ""], ["y95277777", "张晓翠 Scarlett Zhang", 1, 11065, 0, 0, 1, 11065, 1, 0, 0, ["综合"], [], "", 0.0, 0.0, 0, ""], ["jiujinshan2022", "张晓翠 Scarlett Zhang", 2, 10429, 8, 92707, 10, 103136, 1, 2, 7, ["AI", "Meme"], [], "", 0.0, 0.0, 0, ""], ["NFTfafafa", "张晓翠 Scarlett Zhang", 1, 9226, 3, 30314, 4, 39540, 0, 4, 0, ["综合"], [], "", 0.0, 0.0, 0, ""], ["Wuhuoqiu", "Mercy Luo 罗斐丹", 2, 8668, 1, 3189, 3, 11857, 0, 0, 3, ["综合"], ["OKX合约", "OpenClaw"], "", 0.0, 0.0, 0, ""], ["congge918", "Mercy Luo 罗斐丹", 1, 6540, 0, 0, 1, 6540, 0, 0, 1, ["综合"], ["OKB"], "", 0.0, 0.0, 0, ""], ["ShiGuangYuYanJi", "董家昊 Cayne Dong", 1, 6199, 7, 17046, 8, 23245, 0, 1, 7, ["综合"], [], "", 0.0, 0.0, 0, ""], ["realxiodos", "Mercy Luo 罗斐丹", 2, 5371, 4, 24053, 6, 29424, 0, 4, 2, ["综合"], [], "", 0.0, 0.0, 0, ""], ["cryptobraveHQ", "Mercy Luo 罗斐丹", 1, 5193, 4, 68428, 5, 73621, 0, 0, 5, ["综合"], [], "", 0.0, 0.0, 0, ""], ["XXY177", "Yuki He 贺羽溪", 1, 4964, 6, 492029, 7, 496993, 1, 1, 5, ["综合"], [], "", 0.0, 0.0, 0, ""], ["misaENFP", "Yuki He 贺羽溪", 2, 4086, 0, 0, 2, 4086, 1, 0, 1, ["综合"], [], "", 0.0, 0.0, 0, ""], ["YuGuan1209", "董家昊 Cayne Dong", 1, 3867, 3, 15148, 4, 19015, 0, 0, 4, ["综合"], ["OKB"], "", 0.0, 0.0, 0, ""], ["Meta8Mate", "董家昊 Cayne Dong", 1, 3568, 6, 26896, 7, 30464, 0, 3, 4, ["综合"], [], "", 0.0, 0.0, 0, ""], ["octopusycc", "张晓翠 Scarlett Zhang", 1, 3511, 1, 1502, 2, 5013, 0, 0, 2, ["AI", "DEX", "交易", "市场"], [], "", 0.0, 0.0, 0, ""], ["Blockchainrese6", "董家昊 Cayne Dong", 1, 2806, 1, 7306, 2, 10112, 0, 1, 1, ["综合"], [], "", 0.0, 0.0, 0, ""], ["laobaishare", "张晓翠 Scarlett Zhang", 1, 2696, 1, 2696, 2, 5392, 0, 0, 2, ["综合"], ["OKX合约"], "", 0.0, 0.0, 0, ""], ["bocaibocai_", "Mercy Luo 罗斐丹", 1, 1483, 0, 0, 1, 1483, 0, 0, 1, ["综合"], [], "", 0.0, 0.0, 0, ""], ["btcdaheng", "Mercy Luo 罗斐丹", 1, 1372, 3, 17703, 4, 19075, 1, 0, 3, ["AI", "Meme"], [], "", 0.0, 0.0, 0, ""], ["DeFi8362", "Mercy Luo 罗斐丹", 1, 1280, 4, 19939, 5, 21219, 1, 2, 2, ["综合"], [], "", 0.0, 0.0, 0, ""], ["0xmasiwei", "Mercy Luo 罗斐丹", 1, 1, 5, 20522, 6, 20523, 1, 1, 4, ["市场"], [], "", 0.0, 0.0, 0, ""], ["evilcos", "Mercy Luo 罗斐丹", 1, 0, 0, 0, 1, 0, 0, 0, 1, ["综合"], [], "", 0.0, 0.0, 0, ""], ["tugouplayer", "Mercy Luo 罗斐丹", 0, 0, 1, 1771, 1, 1771, 0, 0, 1, ["综合"], [], "", 0.0, 0.0, 0, ""], ["crypto_pumpman", "Mercy Luo 罗斐丹", 0, 0, 3, 391150, 3, 391150, 0, 0, 3, ["综合"], [], "", 0.0, 0.0, 0, ""], ["love_doge123", "Mercy Luo 罗斐丹", 0, 0, 3, 43420, 3, 43420, 0, 1, 2, ["撸毛", "DeFi", "链上", "交易", "市场"], [], "", 0.0, 0.0, 0, ""], ["Yuanshan0626", "Mercy Luo 罗斐丹", 0, 0, 1, 7421, 1, 7421, 0, 0, 1, ["综合"], [], "", 0.0, 0.0, 0, ""], ["Goupenguin", "Mercy Luo 罗斐丹", 0, 0, 3, 29228, 3, 29228, 0, 2, 1, ["综合"], [], "", 0.0, 0.0, 0, ""], ["0x_Northland", "Mercy Luo 罗斐丹", 0, 0, 5, 23062, 5, 23062, 1, 0, 4, ["综合"], [], "", 0.0, 0.0, 0, ""], ["JoeyJia11", "Mercy Luo 罗斐丹", 1, 0, 1, 0, 2, 0, 2, 0, 0, ["综合"], [], "", 0.0, 0.0, 0, ""], ["thecryptoskanda", "Mercy Luo 罗斐丹", 0, 0, 1, 49112, 1, 49112, 0, 0, 1, ["AI", "链上"], [], "", 0.0, 0.0, 0, ""], ["Greta0086", "Mercy Luo 罗斐丹", 0, 0, 1, 0, 1, 0, 1, 0, 0, ["综合"], [], "", 0.0, 0.0, 0, ""], ["wdctlllltcdw", "Mercy Luo 罗斐丹", 0, 0, 2, 4777, 2, 4777, 0, 1, 1, ["交易"], [], "", 0.0, 0.0, 0, ""], ["xiaheth", "Mercy Luo 罗斐丹", 0, 0, 2, 79616, 2, 79616, 0, 0, 2, ["综合"], [], "", 0.0, 0.0, 0, ""], ["one_snowball", "Mercy Luo 罗斐丹", 0, 0, 7, 109936, 7, 109936, 0, 0, 7, ["AI", "DEX", "交易", "安全"], [], "", 0.0, 0.0, 0, ""], ["hongshen6666btc", "Mercy Luo 罗斐丹", 0, 0, 5, 170248, 5, 170248, 1, 2, 2, ["撸毛", "AI", "DEX", "Meme", "链上", "交易", "市场"], [], "", 0.0, 0.0, 0, ""], ["maid_crypto", "Mercy Luo 罗斐丹", 0, 0, 1, 10635, 1, 10635, 0, 1, 0, ["AI", "市场"], [], "", 0.0, 0.0, 0, ""], ["OwenJin12", "Mercy Luo 罗斐丹", 0, 0, 3, 35133, 3, 35133, 1, 2, 0, ["综合"], [], "", 0.0, 0.0, 0, ""], ["off_thetarget", "Mercy Luo 罗斐丹", 0, 0, 1, 1381, 1, 1381, 0, 0, 1, ["综合"], [], "", 0.0, 0.0, 0, ""], ["xtony1314", "Yuki He 贺羽溪", 0, 0, 1, 50513, 1, 50513, 0, 0, 1, ["交易"], [], "", 0.0, 0.0, 0, ""], ["jmhuolongguo", "Yuki He 贺羽溪", 0, 0, 4, 571660, 4, 571660, 4, 0, 0, ["综合"], [], "", 0.0, 0.0, 0, ""], ["xiaoheshang2025", "Yuki He 贺羽溪", 0, 0, 2, 21187, 2, 21187, 0, 1, 1, ["交易"], [], "", 0.0, 0.0, 0, ""], ["Gabrysia_eth", "董家昊 Cayne Dong", 0, 0, 1, 3997, 1, 3997, 0, 0, 1, ["综合"], [], "", 0.0, 0.0, 0, ""], ["Moon1ightSt", "董家昊 Cayne Dong", 0, 0, 3, 97330, 3, 97330, 1, 0, 2, ["综合"], [], "", 0.0, 0.0, 0, ""], ["qinbafrank", "Mercy Luo 罗斐丹", 0, 0, 1, 13824, 1, 13824, 0, 0, 1, ["链上", "交易"], [], "", 0.0, 0.0, 0, ""], ["Baby__BTC", "张晓翠 Scarlett Zhang", 0, 0, 1, 10082, 1, 10082, 0, 0, 1, ["综合"], [], "", 0.0, 0.0, 0, ""], ["Evans666666", "张晓翠 Scarlett Zhang", 0, 0, 3, 37756, 3, 37756, 0, 0, 3, ["综合"], [], "", 0.0, 0.0, 0, ""], ["bitcoinzhang1", "张晓翠 Scarlett Zhang", 0, 0, 1, 3942, 1, 3942, 0, 1, 0, ["综合"], [], "", 0.0, 0.0, 0, ""], ["btclaomao6", "张晓翠 Scarlett Zhang", 0, 0, 1, 25170, 1, 25170, 0, 1, 0, ["综合"], [], "", 0.0, 0.0, 0, ""], ["Jim519", "张晓翠 Scarlett Zhang", 0, 0, 1, 341, 1, 341, 0, 1, 0, ["综合"], [], "", 0.0, 0.0, 0, ""], ["Crypto_Cat888", "张晓翠 Scarlett Zhang", 0, 0, 20, 185677, 20, 185677, 4, 3, 13, ["综合"], [], "", 0.0, 0.0, 0, ""], ["lamss001", "张晓翠 Scarlett Zhang", 0, 0, 3, 3091, 3, 3091, 0, 2, 1, ["综合"], [], "", 0.0, 0.0, 0, ""], ["qklxsqf", "张晓翠 Scarlett Zhang", 0, 0, 2, 12452, 2, 12452, 0, 2, 0, ["综合"], [], "", 0.0, 0.0, 0, ""], ["lianyanshe", "董家昊 Cayne Dong", 0, 0, 5, 87182, 5, 87182, 0, 2, 3, ["AI", "DEX", "Meme", "链上", "交易", "市场"], [], "", 0.0, 0.0, 0, ""], ["DoctorMbitcoin", "董家昊 Cayne Dong", 0, 0, 2, 17137, 2, 17137, 0, 0, 2, ["综合"], [], "", 0.0, 0.0, 0, ""], ["Ed_x0101", "董家昊 Cayne Dong", 0, 0, 6, 12896, 6, 12896, 3, 0, 3, ["综合"], [], "", 0.0, 0.0, 0, ""], ["hellosuoha", "董家昊 Cayne Dong", 0, 0, 2, 12379, 2, 12379, 0, 2, 0, ["AI", "Meme", "链上", "交易", "市场"], [], "", 0.0, 0.0, 0, ""], ["yeruizhang", "董家昊 Cayne Dong", 0, 0, 1, 18655, 1, 18655, 0, 1, 0, ["交易"], [], "", 0.0, 0.0, 0, ""], ["0xAA_Science", "董家昊 Cayne Dong", 0, 0, 1, 18935, 1, 18935, 0, 1, 0, ["综合"], [], "", 0.0, 0.0, 0, ""], ["hm010169", "董家昊 Cayne Dong", 0, 0, 1, 23337, 1, 23337, 0, 1, 0, ["综合"], [], "", 0.0, 0.0, 0, ""], ["lijiuer1", "董家昊 Cayne Dong", 0, 0, 7, 70792, 7, 70792, 0, 3, 4, ["链上", "交易", "市场"], [], "", 0.0, 0.0, 0, ""], ["Reboottttttt", "董家昊 Cayne Dong", 0, 0, 1, 2893, 1, 2893, 0, 1, 0, ["综合"], [], "", 0.0, 0.0, 0, ""], ["vvickym2", "董家昊 Cayne Dong", 0, 0, 2, 14291, 2, 14291, 1, 0, 1, ["撸毛", "交易", "市场"], [], "", 0.0, 0.0, 0, ""], ["_FORAB", "张晓翠 Scarlett Zhang", 0, 0, 6, 595138, 6, 595138, 0, 2, 4, ["综合"], [], "", 0.0, 0.0, 0, ""], ["brc20niubi", "张晓翠 Scarlett Zhang", 0, 0, 1, 63355, 1, 63355, 0, 0, 1, ["综合"], [], "", 0.0, 0.0, 0, ""], ["jimohuoshan", "张晓翠 Scarlett Zhang", 0, 0, 3, 9558, 3, 9558, 0, 0, 3, ["综合"], [], "", 0.0, 0.0, 0, ""], ["0xVeryBigOrange", "张晓翠 Scarlett Zhang", 0, 0, 2, 20654, 2, 20654, 0, 0, 2, ["综合"], [], "", 0.0, 0.0, 0, ""], ["Mumu_yay", "张晓翠 Scarlett Zhang", 0, 0, 2, 6282, 2, 6282, 0, 0, 2, ["综合"], [], "", 0.0, 0.0, 0, ""], ["vvxiaoyu8888", "张晓翠 Scarlett Zhang", 0, 0, 3, 28915, 3, 28915, 2, 0, 1, ["AI", "链上", "交易", "市场"], [], "", 0.0, 0.0, 0, ""], ["blockTVBee", "张晓翠 Scarlett Zhang", 0, 0, 2, 11890, 2, 11890, 0, 0, 2, ["综合"], [], "", 0.0, 0.0, 0, ""]], "posts": [["wangduanniao", 215586, 235, 202, -1, "2026-04-04", "我质押了1000个okb，借了3万刀。\n\n比支付宝利息低很多。\n\n年化只有2.5%\n\n接下来要勒紧裤腰带过苦日子了。\n\n一个月房贷1.6万。\n\n我跟我老婆的社保5000多。\n\n2万多的固定支出。\n\n熊市还不知道啥时候结束，难受了。 https://x.com/Wangduanniao/status/2040336711310520433/photo/1", "https://x.com/wangduanniao/status/2040336711310520433", "王短鸟 (长鸟版)"], ["cloakmk", 183155, 32, 36, 0, "2026-03-30", "当前如期反弹，能走多远需要观望，博反弹绝不贪！\n\n这是BTC的月线走势图，紫色箱体（$45K - $72K之间）是上一轮周期的双顶区域，也是本轮主升浪前的重要筹码换手区。\n\nBTC 冲顶 $12K+ 后出现连续暴跌，目前价格 $68K 正好砸回这个箱体的上沿，这是技术分析中最经典的“突破后回踩”。\n\n月线级别连续的实体大阴线表明，顶部的派发非常坚决，主力的抛压已经得到了一定程度的释放。当前月线收出", "https://x.com/cloakmk/status/2038595808019505474", "子棋（重生版）"], ["qiyumeme", 161577, 74, 117, -1, "2026-04-03", "okx我在用你一次我是狗 我真气死了 今天我导出一个小钱包 导出在okx 就只授权了FOUR 晚上就被盗了 现在把我钱包还给冻结了 你不冻结黑客的你冻结我的  我用你们okx差不多来来回回被盗了3万多刀了 我以为不乱授权就没事了\n\n这顶不住你们自己盗呀 快出来讲话 @OKXWallet_CN  @Mercy_okx @okx https://x.com/qiyumeme/status/203976", "https://x.com/qiyumeme/status/2039765772332151056", ""], ["yyds123888", 153637, 82, 137, -1, "2026-04-04", "刚收到私信，有人被盗走 7.2 万 USDT，希望我帮忙联系 @evilcos。\n\n这个小偷非常有耐心，玩的是“放长线钓大鱼”。\n\n起初钱包里有 2.9 万 USDT，小偷一直隐忍没动手；直到受害人第二笔 4.3 万 USDT 转入，仅过了 3 分钟，7.2 万 USDT 便被悉数转走。\n\n更绝的是，这贼连最后的 60 TRX 手续费都没放过。TRX 单价才 0.3 U，这点手续费也就 18 U。", "https://x.com/yyds123888/status/2040336197424382335", "币圈福利哥"], ["xiaoshunli", 124254, 116, 310, -1, "2026-04-02", "币安真的怕被DEX干掉，因为CZ和何一内心知道，币安其实距离倒闭倒计时了。\n\n币安最怕Hyperliquid，如果满分是100分，那币安就是120分的恐惧。\n\n直接证据就是币安至今没上线Hype现货。但是你猜怎么着，OKX上线了，Coinbase上线了，为啥币安不上线？\n\n害怕，币安太害怕Hype这个强有力的对手了。因为怕，所以不可以给任何的机会，上Hype上现货。\n\n对真正的对手，只有赶尽杀绝。", "https://x.com/xiaoshunli/status/2039540298225987649", ""], ["yyds123888", 110665, 57, 98, -1, "2026-04-04", "后续来了：\n\n小偷急于变现，把钱提到了火币。\n\n这下完蛋了，火币的实名精细到L3，叠加了身份证➕人脸识别。\n\n下午他被盗，我第一时间让他去联系币安、OKX、Bitget、火币、GATE，所有交易所都联系一遍，只要小偷敢变现，一定能让他露出马脚。\n\n没想到小偷这么急不可耐地就要变现了，交易所在这次被盗事件里，切实起到了用户资产安全屏障的作用。\n\n有任何进展，持续更新中... 刚收到私信，有人被盗走 ", "https://x.com/yyds123888/status/2040390045224566791", "币圈福利哥"], ["wolfyxbt", 103866, 53, 143, 0, "2026-04-04", "Coinglass 昨天发了 2026 年 Q1 的币圈 CEX 市场份额报告\n\n整份报告有点长，然后数据分成好几张图片来分别展示，我觉得有点难以阅读，这里直接帮大家把提到的数据都整合成一张图了，方便大家观看。\n\n• 现货方面：币安 > Gate > Bybit > Coinbase > OKX\n• 合约方面：币安 > OKX > Bybit > Gate > Bitget\n• 资沉方面：币安 >", "https://x.com/wolfyxbt/status/2040409275940680165", ""], ["pwenzhen76938", 94928, 64, 105, 0, "2026-04-04", "我朋友上个月把资产从某个小交易所转到币安\n\n我问他为什么\n\n他说：“我不在乎手续费高一点，我只想睡得着觉”\n\n这句话让我想起CoinGlass刚发的2026 Q1报告\n\n币安Q1日均用户存放的资产是1529亿美元，占主要CEX 的73.5%\n\n第二名OKX是159亿美元，只有币安的1/9.6\n\n这个差距比我想象的大得多\n\n---\n\n➢报告里提到一个观点：\n\n用户资产存放规模比交易量更能反映平台的安", "https://x.com/pwenzhen76938/status/2040307130222477330", ""], ["laowu3677", 85625, 71, 83, -1, "2026-04-03", "鸟哥@Wangduanniao \n\n我在闲鱼看见你了\n\n你在卖周边加仓OKB吗？ 这是你吗？\n\n连个人简介都是OKB什么时候上500刀啊\n\n你我真的哭死😭 https://x.com/laowu3677/status/2039736997011714341/photo/1", "https://x.com/laowu3677/status/2039736997011714341", ""], ["web3_xiaoyao", 85221, 25, 21, 0, "2026-03-30", "你有没有发现，我们总是追逐速度、DeFi、DAO，却很少有人停下来问，这些决策、争论、转向，三年后谁还记得为什么？\n\n早上刷到一条帖子点醒了我，贴子里写道，每天发生的事像潮水一样涌来，上下文却悄无声息地消失。人们走散，平台换代，历史就成了模糊的截图。如果记忆可以蒸发，那它就无法治理。\n\n这正是 @Permaweb_DAO 在干的事，他们不是又一个存数据的项目，做到的是把记忆当成基础设施来建设，可寻", "https://x.com/web3_xiaoyao/status/2038433501750731218", ""], ["0xsexybanana", 82210, 40, 88, 0, "2026-04-04", "太长不看版：\n- 现货市场，bn第一，市占率35%，第二名是gate\n- 合约市场，bn第一，市占率35%，第二名是okx\n-oi，bn第一，市占率30%，第二名是bybit\n-用户托管资产：bn断崖式第一，市占率73%，比第二名okx要多出十倍。okx又比gate多一倍。\n\n大家有没有想过为什么币安的用户资产储备领先这么多？\n我浅浅猜测两个原因：\n\n1）良好的流动性，为量化交易和结构化基金产品提", "https://x.com/0xsexybanana/status/2040321259905634497", ""], ["falali812", 78038, 24, 90, -1, "2026-03-30", "Ok交易所@star_okx 晒证据说@cz_binance 的能力不行，在ok交易所的时候还经常合同造假，我随便截了几张图。\n真实情况如何我们这种散户是不清楚的，每年的熊市都一样，各种大佬开始撕比，区块链好像再也回不到16-17那样纯净的样子了。 https://pbs.twimg.com/media/HEpcuXebMAEOsP8.jpg", "https://x.com/falali812/status/2038543978912677979", ""], ["rocky_bitcoin", 77401, 10, 23, 0, "2026-03-31", "今天 #OKX 双币赢策略结算了！\n\n#BTC 价格未跌破65000美金！\n\n获得了940美金的收益，综合年华40%！\n\n这应该是熊市抄底的最佳策略！这比任何稳定币理财，收益都高，难怪很多OG老师们最近都在搞！🥸 https://pbs.twimg.com/media/HEvbxitawAA81zP.jpg https://twitter.com/rocky_bitcoin/status/2038", "https://x.com/rocky_bitcoin/status/2038964906633138239", "Rocky"], ["wy_mask", 70703, 10, 145, 0, "2026-04-02", "大家可以归集一下钱包，看到微信群愉悦美女发的\n\n1、zks lite要关了，你可能之前有钱忘记提走：https://lite.zksync.io/account/\n\n2、polygon zkevm要关了，L2有几百条呢，还有很多也关了，打开okx wallet和debank里的defi看看有没有漏的\nhttps://debank.com/profile\n\n3、有些空投通过这个线形解锁的，可能很多人", "https://x.com/wy_mask/status/2039601128950964411", "无颜 (❖,❖) | MemeMax⚡️"], ["leooo2099", 68464, 43, 298, 0, "2026-03-31", "华尔街快死了，但没人告诉你它是怎么死的\n\n做了20年美股，见过99泡沫，08雷曼，GME散户逼空。\n\n但我从来没见过这种事：2026年3月，有时候加密这边的特斯拉先动了0.7%，过了10分钟，纳斯达克的真实特斯拉才跟上来。\n\n以前永远是纳斯达克先动，全世界跟着动，现在第一次，反过来了。\n\n这不是一条新闻，这是整个金融秩序正在翻转的信号。\n\n一、你以为你在交易美股，其实你不知道那笔单子去了哪里\n\n先", "https://x.com/leooo2099/status/2039005118071460317", ""], ["qiyumeme", 64229, 39, 34, -1, "2026-04-03", "事情经过是这样 昨天10：10分左右我导入的okx平台 \n\n期间并没有授权任何东西 然后半夜1：14 我这里显示私钥被导出 把我的BNB转走了 但是没有转我的持仓 只转走了我的BNB 我这个钱包私钥是没有身边熟人知道的所以大概率排除熟人作案 \n\n我现在只想求证一下被盗原因 是我那一步操作错了还是怎么回事 https://x.com/qiyumeme/status/20398710520300466", "https://x.com/qiyumeme/status/2039871052030046663", ""], ["0xxiaoc", 60772, 38, 101, 0, "2026-03-30", "EDGE 疑似向币安Alpha转入了 500万枚代币\n占总代币量的 0.5%，价值270万\n\n大概率是全所大满贯了\nOkx，Bybit，Cobinase已经在进行充币测试\n希望社区空投的、撸Alpha、撸Boost的兄弟们都发财", "https://x.com/0xxiaoc/status/2038608726526177652", ""], ["banbendaan", 59537, 12, 25, -1, "2026-04-02", "第一个给我打钱的不是马斯克。\n\n我大概就发了两个帖子，领了54U，一点都不卷，我的星球就166个粉丝。\n\n@star_okx @Mercy_okx @Haiteng_okx\n\n星球除了撒钱，需要考虑2个问题，我现在不想主动使用星球就是这2个原因。\n\n1.依赖推特同步是饮鸩止渴。（产品想一下，如果内容是从X搬运过来的，我为啥我不直接去X 看贴 发帖？）\n\n2. 看帖功能是基础，现在缺少时间排序的全部", "https://x.com/banbendaan/status/2039657423460590018", ""], ["rocky_bitcoin", 58809, 17, 62, 1, "2026-03-30", "我的 #BTC 定投策略，很简单，65000以内分批买！🧐\n\n一直在用 #OKX 双币赢，如👇图，以我44万美金举栗，24小时到期，综合年华40%左右！\n\n假如跌破65000和63000，我获得 #BTC！\n\n假如大于65000，我获得940美金利息+本金！\n\n真的超爽，一个人生活，普普通通一天，消费不超过500美金💸！稳稳的躺赢熊市！ https://pbs.twimg.com/media/HE", "https://x.com/rocky_bitcoin/status/2038470431787864140", "Rocky"], ["wangduanniao", 54834, 89, 80, 0, "2026-04-02", "我突然感觉，熊市不会那么快结束了。\n\n接受了现在是熊市的事实了。\n\n回想起了2022年的这个季节。\n\n无论是空气的温度，天空的颜色，还是市场的感觉，都是一样的。\n\n还是一样坚持持有自己信仰的标的。\n\n上次是村上花nft，这次是OKB\n\n希望会有不一样的结果吧 https://x.com/Wangduanniao/status/2039560554302578768/photo/1 https://", "https://x.com/wangduanniao/status/2039560554302578768", "王短鸟 (长鸟版)"], ["0xmoon", 52026, 42, 86, 0, "2026-04-03", "Bybit的资沉和交易量\n居然不知不觉间超越了OKX\n\n如果能够保持下去\n将成为新的全球第二大交易所 https://x.com/0xMoon/status/2040040435209630194/photo/1", "https://x.com/0xmoon/status/2040040435209630194", ""], ["wangduanniao", 51737, 41, 59, -1, "2026-04-02", "我也收到了184刀！\n\nOkx 星球牛逼！ https://x.com/Wangduanniao/status/2039658684591272063/photo/1 https://twitter.com/banbendaan/status/2039657423460590018 第一个给我打钱的不是马斯克。\n\n我大概就发了两个帖子，领了54U，一点都不卷，我的星球就166个粉丝。\n\n@star", "https://x.com/wangduanniao/status/2039658684591272063", "王短鸟 (长鸟版)"], ["fls_otc", 51268, 25, 23, -1, "2026-04-02", "人往往会被自己洗脑，空仓后我充分认识到此点，满仓时总是洗脑自己，很容易幻想一些不切实际和小概率的事情。其实整体现货仓位回撤20%-30%时就已经认识到问题，满仓的错误、建仓时机的错误，一次次的安慰自己趋势会好起来，直到战争的进展，不得不让我回归理性，也可能是腰斩过于残酷血腥让我害怕。我以前炒币赚的都是趋势的钱，这次逆趋势亏钱也是理所应当。复盘总结经验，等下一次趋势好转我还会回来的，等风来。 有些兄", "https://x.com/fls_otc/status/2039688888764260356", "福禄寿 UV DAO"], ["bqlsj2023", 49582, 37, 58, 0, "2026-04-04", "Q1加密市场报告出来了，Binance继续遥遥领先\n\n全市场现货交易量约 1.94 万亿美元，合约交易量约 18.63 万亿美元，总规模约 20.57 万亿美元\n\n币安Q1 衍生品交易量约 4.90 万亿美元，在 Top 10 交易平台中占比 34.9%\n\n用户资产储备约 1529 亿美元，占主流中心化交易平台的 73.5%\n\nBinance 在多个核心指标上显著领先：衍生品交易量约为 OKX 的", "https://x.com/bqlsj2023/status/2040249071349440991", ""], ["punk2898", 48570, 29, 65, 0, "2026-04-04", "我一直在提币安和 OKX 的第二个战场概念\n\n因为“合规”是护城河，是“门槛”，其他所固然可以通过美股 rwa、长尾项目流量赚钱\n\n但是大资金最在乎的就是合规，这也是我敢把大资金放在币安的原因，这也是其他大户敢把大资金放在币安的原因\n\n而且每次产提现 100w美金都是瞬间通过的，但是其他家会有一些等待\n\n所以，币安和 OKX 需要在第二个战场获得领先地位，因为在第一战场，他们稍微降低一下门槛就能把", "https://x.com/punk2898/status/2040261298873843900", "punk"], ["wy_mask", 47574, 11, 20, -1, "2026-03-31", "想定投的真心强烈推荐大家参与OKX @okxchinese 的双币赢\n\n1、交易所app菜单找到双币赢，我选择的是稳定币跟BTC的交易对  \n\n2、年化这一块大家可以自己选，我是选的低买BTC，7-30天，跌破6万买进，到期没买进就给利息USDT，买进的话就会多给BTC\n\n3、如果不想买BTC，单纯想撸高年化收益就保守一点 https://pbs.twimg.com/media/HEvSlS7bI", "https://x.com/wy_mask/status/2038957521076211774", "无颜 (❖,❖) | MemeMax⚡️"], ["daidaibtc", 47241, 32, 152, 0, "2026-03-30", "你妈，是真几把能说。去币安广场随便拉个散户 行业现在有什么问题  行业还有机会吗 行业都这逼样了 都能说上几句。能说成这样 确实文字功底天赋异禀 dovey的机构确实在汉语言文学领域有卓越的遥遥领先。怪不得能给我都割了几刀还能让我时常拜读雄文。 https://twitter.com/Mercy_okx/status/2038499206491697250 AI 正在吸干流动性，Crypto 还有", "https://x.com/daidaibtc/status/2038582573216289189", "带带带比特"], ["shangdu2005", 46588, 2, 5, 0, "2026-03-31", "双第一，累计获奖6万RMB!\n靠一个项目获得OKX和币安AI活动第一名！\n关于加密货币税务统计:\n大家瞧瞧吧。\n地址:https://github.com/Skottbie/VeriTax https://pbs.twimg.com/media/HEq-HdVa0AA5sDf.jpg https://twitter.com/shangdu2005/status/203847118143589201", "https://x.com/shangdu2005/status/2038650828509397095", ""], ["chairbtc", 46124, 66, 79, 0, "2026-04-05", "买平台币人的心理\n现在买点OKB，它要是成为下一个BNB，还能涨10倍\n现在买点BGB，它要是下一个OKB，能涨40倍，它要是下一个BNB，能涨200多倍", "https://x.com/chairbtc/status/2040460548798812475", ""], ["ryu_lcat", 45307, 140, 231, 0, "2026-04-03", "说真的，打算找机会配置点okb，万能的X友，请告诉我什么价格入手适合？🤔 https://x.com/Ryu_LCat/status/2040069078627545432/photo/1", "https://x.com/ryu_lcat/status/2040069078627545432", ""], ["captain_kent", 44963, 97, 97, 0, "2026-04-03", "嗯哼转投火币是在意料之中的事情，他和孙宇晨有着类似的成功经历，可以说有更多共同话题。\n\n孙宇晨对嗯哼来讲，更像是大哥，而不是 CZ 那种父亲角色。\n\n虽然 OKX 和币安经常互相挖人，但嗯哼此前把 STAR 得罪了遍，是不太可能去的，而且 STAR 的作风更行业化，不是个人化。\n\n不过，嗯哼似乎对“太子”这个称号还是有执念，极力的捧孙哥为“皇”，因为有“皇上”才有“皇太子”。\n\n另外在一个饭局上听", "https://x.com/captain_kent/status/2039997728998957375", ""], ["shangdu2005", 44893, 11, 211, 0, "2026-03-31", "给力，Qwen 3.6 Plus 直接免费了！\n100万上下文。\n测试了还不错，可以试试。\n这里申请API:\nhttps://openrouter.ai/activity https://pbs.twimg.com/media/HEuoc8vbsAAjBlx.png https://twitter.com/shangdu2005/status/2038650828509397095 双第一，累计获", "https://x.com/shangdu2005/status/2038910548725936339", ""], ["0xmoon", 44678, 86, 97, -1, "2026-04-05", "其实我一直不懂 \n为什么Bitget喜欢称自己为“华语新三大”\n\n众所周知目前的华语前三\nBinance、OKX、Bybit\n到底是哪一家说话声音太小让Bitget挤下去了\n\n抛开这些不说\n资沉不如HTX、交易量不如Gate\n到底靠什么支撑“华语新三大”\n\n有没有和用户对赌\n这一点大家推特搜索并回忆 Floki子币事件即可 https://x.com/0xMoon/status/204065430", "https://x.com/0xmoon/status/2040654306433740875", ""], ["michael_liu93", 44368, 15, 134, 0, "2026-04-02", "不知道有多少人还记得上轮熊市时候的upbit+币安合约爆空币，arpa、loom、hifi、gas、cyber，每个月两三个，操盘做法是币安合约开多，然后韩所现货拉盘爆空，最后一两天直接断头铡（当时还怀疑是不是在给韩国资方洗钱）\n\n那会儿还没这么多人会盯链上，一个屡试不爽的策略就是盯庄的链上upbit归集地址，从归集地址开始大额转币安和OKX交易所后5-10分钟包砸盘，每个撸个轻松模式撸个10w-", "https://x.com/michael_liu93/status/2039673825328341453", ""], ["yiyixmb", 43776, 7, 82, 0, "2026-04-03", "✅如果参与过很多链上项目，你可能会有一些待处理的 ETH，全网合约里有16W个遗留的 ETH：\n\n1，前往： https://forgotteneth.com\n\n2，贴上您的EVM地址\n\n3，检查钱包 https://pbs.twimg.com/media/HE_M_15asAAaHvP.jpg https://twitter.com/Yiyixmb/status/2039972431079916", "https://x.com/yiyixmb/status/2040074912665379234", ""], ["cryptomaster_70", 42116, 29, 202, -1, "2026-04-02", "台灣 有人因為在Polymarket下注政黨九合一選舉而被警方抓捕拘提。\n被抓的2人分別下注 [5 USDC] 及 [20 USDC]。\n\n違法的當事人表示很震驚，嚇到的不是違法，而是警方竟然可以透過鏈上金流，並反推其自 <中心化交易所> 提領至 Polymarket 的出入金追查，再更進一步要求 <中心化交易所> 提供 KYC 身分資料，讓原本以為抓不到的 <匿名> 的鏈上交易，能迅速在真實世界", "https://x.com/cryptomaster_70/status/2039634861888250018", ""], ["rocky_bitcoin", 41893, 45, 48, 1, "2026-04-02", "随着 #BTC 价格越来越低，低买 #BTC 的双币赢方案，越来越香了！\n\n比如今天我锁定了一个50000美金的双币赢，时间周期为84天！\n\n假如跌到5万美金，买入4个BTC！\n\n假如大于5万美金，获得4000U收益！\n\n貌似很香，5万美金完全可以接受！🧐\n\n有更好方案，欢迎一起交流！🫡\n\n#OKX @Jiajia_OKX @mia_okx https://pbs.twimg.com/media/", "https://x.com/rocky_bitcoin/status/2039617679427064137", "Rocky"], ["phyrexni", 41442, 12, 24, 0, "2026-04-04", "CoinGlass 2026年第一季度 加密货币市场份额研究报告\n\n2026 年第一季度中心化交易所的数据 #Binance 依然是整个行业里唯一一个在衍生品成交、平均持仓、订单簿深度和用户资产沉淀四个核心维度同时排在第一的平台。第一季度 Binance 衍生品成交约 4.90 万亿美元，Top 10 口径下份额约 34.9%，平均 OI 约 239 亿美元，用户资产沉淀约 1529 亿美元。\n\n", "https://x.com/phyrexni/status/2040124442828021860", "Phyrex"], ["mk66623", 39848, 29, 75, -1, "2026-03-31", "熊市没毛撸，现在开始撸人了，喜欢“撸”旅游的 KOL 务必注意！\n\n近日东南亚某国，有人打着交易赛的幌子，包机酒把人骗过去。到了就对你“掏心掏肺”，逼问私钥抢走资产，已经有好几个人下落不明了。\n\n其实币圈办线下活动，亚洲就认准四个地方：港澳、新加坡、日本、韩国，主打一个安全省心。\n\n参加交易所活动，币安、OKX、Bitget、Gate、Bybit、火币、WEEX 等都能去。\n\n项目方的活动也尽量做", "https://x.com/mk66623/status/2039002527967195276", ""], ["jason_chen998", 38405, 46, 85, 0, "2026-04-03", "很多币圈的朋友都担心过万一哪天出点事家人都不知道钱在哪里，毕竟交易所不像是银行能直接去线下网点找客服，OKX的这个资产找回功能挺不错的很人性化，刚才配置了一下，可以设置两个时间，先设置一个未使用时间，也就是如果超过这个时间比如1年你的账户从来没有被打开过，于是交易所就会和你联系，则进入到了你设置的第二个回复时间，比如过了1个月你还没有回复，则交易所就会和你留的紧急联系人沟通取回资产。建议交易所资产", "https://x.com/jason_chen998/status/2039981682728862092", "陈剑Jason"], ["web3_xiaoyao", 36689, 0, 5, 0, "2026-03-30", "继续肝\nhttps://x.com/web3_xiaoyao/status/2038433501750731218?s=20 你有没有发现，我们总是追逐速度、DeFi、DAO，却很少有人停下来问，这些决策、争论、转向，三年后谁还记得为什么？\n\n早上刷到一条帖子点醒了我，贴子里写道，每天发生的事像潮水一样涌来，上下文却悄无声息地消失。人们走散，平台换代，历史就成了模糊的截图。如果记忆可以蒸发，那它就", "https://x.com/web3_xiaoyao/status/2038435750556168680", ""], ["yiyixmb", 34141, 8, 7, 0, "2026-04-03", "✅OKX @okx 推出的双币赢理财，适合当前行情的策略，简单来说，它帮助你实现“低买高卖”的同时，还能额外赚取期权权利金般的收益：\n\n⌛️分为两种核心策略：\n\n↘️低买策略：\n适合持有稳定币USDT的用户，想抄底加密货币，你投入USDT，设定一个低于当前价格的目标价。 \n \n到期时：  如果标的币（如BTC）价格≤ 目标价 → 你成功以目标价买入BTC，并获得BTC形式的收益。 \n \n如果BTC", "https://x.com/yiyixmb/status/2039972431079916006", ""], ["jt588888", 33049, 23, 59, -1, "2026-04-03", "告诉你一个扎心的真相@star_okx  \n\n你这辈子所有的不顺，都是格局太小的报应\n真正的格局不是你表面的宽容与豪爽，而是你的认知，定力与德行\n请你不要一辈子都在鸡毛蒜皮里打转，能不能不要困于情绪苛于他人，你需要多从自己身上找原因\n\n请你不要遇到一点小事就炸毛被人说一句就记恨半年，把所有精力都耗在翻旧账上面，看似你有脾气，其实你一直是被情绪操控的傀儡\n\n作为一个交易所老板的你，请你不要拿你自己的", "https://x.com/jt588888/status/2039867238044606515", ""], ["cryptopainter", 31410, 20, 32, 0, "2026-04-03", "自从有了小孩，并发现猝死是个常态后，就总是不由得思考币圈财产怎么办？\n\n看到 #OKX 这个功能毫不犹豫的去添加了紧急联系人，就在账户设置里的安全设置。\n\n不得不说这是个非常人性化的设计！ https://x.com/CryptoPainter/status/2040019777197137943/photo/1 https://twitter.com/okxchinese/status/2037", "https://x.com/cryptopainter/status/2040019777197137943", "Crypto_Painter"], ["wy_mask", 30863, 17, 73, 0, "2026-04-04", "都在理财？\n\nWeb3刀哥 @Web3Daoge1 做了一个网站，用来监控各大交易所收益活动，部分活动还会有博主提交教程\n\nhttps://app.barker.money/campaigns 想定投的真心强烈推荐大家参与OKX @okxchinese 的双币赢\n\n1、交易所app菜单找到双币赢，我选择的是稳定币跟BTC的交易对  \n\n2、年化这一块大家可以自己选，我是选的低买BTC，7-30天，", "https://x.com/wy_mask/status/2040187592122228813", "无颜 (❖,❖) | MemeMax⚡️"], ["0xloki_zeng", 30472, 49, 80, 0, "2026-04-01", "我思考了一下，今年到明年，如果要抄底Crypto，标的必须满足：\n\n1/有稀缺性\n2/不依赖或者不寄生于外部要素\n3/不局限于圈内互卷，有从外面获客或者赚钱的可能性\n\n比如：2018年的 ETH 是有稀缺性的，但是2025年的 ETH 没有稀缺性\n\n 市场对OKB的期待是OKX上市，然后OKB拉盘，但事实上OKX上市不会直接对OKB产生影响\n\n新币，绝大部分都是既没有稀缺性，又依赖于外部要素，比如", "https://x.com/0xloki_zeng/status/2039235861221449845", ""], ["sol_jingou", 30145, 1, 0, 0, "2026-04-03", "🌻bsc交易机器人汇总\n\n1.gmgn  国际排名第一\nhttps://t.me/GMGN_bsc_bot?start=i_7gxhOfqG\n\n2.debot  ai行情分析，抓全网金狗\nhttps://inv.debot.ai/r/181529\n\n3.okx钱包：8折手续费\nhttps://web3.okx.com/ul/joindex?ref=SOL123\n邀请码：SOL123\n\n4.币安钱包", "https://x.com/sol_jingou/status/2039974185670496628", ""], ["wuming_mr_", 30064, 9, 34, -1, "2026-03-30", "🚨 突发惊雷：\n\n顶级巨头 Binance、Coinbase 和 OKX 刚刚开始在美股开盘前疯狂平仓加密资产！\n\n他们利用流动性枯竭的“垃圾时间”，每隔几秒就抛售数百万美元的 $BTC 。\n\n明天（甚至就在几小时后），极度恐怖的事情即将降临…… https://pbs.twimg.com/media/HEnfby4bQAAb3o7.png", "https://x.com/wuming_mr_/status/2038405985421971956", ""], ["rocky_bitcoin", 29876, 57, 69, -1, "2026-03-31", "熊市随笔：别在垃圾时间里躺平\n\n最近这行情，说实话，挺磨人的。横盘、阴跌，最考验心态。\n\n很多兄弟问我这时候该干嘛？我一般给的建议是：「别闲着，抓紧学习，不要浪费这次危机」\n\n流动性不会消失，只会转移。目前虽然美股受挫，阴跌不断，但好的价格往往是跌出来的。我相信未来流动性依旧在美股，在 #AI，这些核心机会中。\n\n作为在美股和加密的老韭菜，我觉得越是市场差的时候，越是补课的好机会，既然币圈现在是“", "https://x.com/rocky_bitcoin/status/2038960454391714186", "Rocky"], ["sol_jingou", 29614, 1, 0, 0, "2026-04-02", "🌻bsc交易机器人汇总\n\n1.gmgn  国际排名第一\nhttps://t.me/GMGN_bsc_bot?start=i_7gxhOfqG\n\n2.debot  ai行情分析，抓全网金狗\nhttps://inv.debot.ai/r/181529\n\n3.okx钱包：8折手续费\nhttps://web3.okx.com/ul/joindex?ref=SOL123\n邀请码：SOL123\n\n4.币安钱包", "https://x.com/sol_jingou/status/2039499606778950050", ""], ["wy_mask", 29458, 7, 56, 0, "2026-04-03", "如果参与了很多项目，可能会有一些待处理的 ETH（合约中遗留的 ETH）\n\n可以输入地址免费查看，已提取 1200 个 ETH，剩余 16 万多个 ETH\n \n➖前往： https://forgotteneth.com\n➖粘贴您的地址\n\n注意：网站安全与否不知道哈，大家可以只输入地址查询，不用连接钱包 https://pbs.twimg.com/media/HE_UlD_awAAudtr.jpg ", "https://x.com/wy_mask/status/2040083173388980530", "无颜 (❖,❖) | MemeMax⚡️"], ["0xxiaoc", 28747, 52, 44, 0, "2026-03-31", "20:30领取Edge (EDGE)Alpha空投 https://twitter.com/0xXIAOc/status/2038608726526177652 EDGE 疑似向币安Alpha转入了 500万枚代币\n占总代币量的 0.5%，价值270万\n\n大概率是全所大满贯了\nOkx，Bybit，Cobinase已经在进行充币测试\n希望社区空投的、撸Alpha、撸Boost的兄弟们都发财", "https://x.com/0xxiaoc/status/2038926605310173554", ""], ["0xmayyy", 28124, 51, 76, -1, "2026-04-03", "如果你在1年前买了 OKB和  HTX \n那你至今还有利润\n\n如果你在1年前买了 BNB 和 MNT\n那理财收益可能够补贴跌幅(没有精细计算过)\n\n如果你在1年前买了 BGB\n那么恭喜你 上辈子遭的孽已经还清了 https://x.com/0xMayyy/status/2040057487446180075/photo/1", "https://x.com/0xmayyy/status/2040057487446180075", ""], ["0xkingskuan", 27009, 38, 92, 0, "2026-04-01", "四大交易所疯狂招人，2026 年谁将称霸加密江湖？\n\n从四大交易所招聘看待未来 ：\n\n🟡 Binance\n\n364+ 个职位狂飙，AI+Web3钱包+全球支付+ BD 全面开花，遥遥领先！\n\n⚫️ OKX\n\n378+ 个岗位猛砸，尤其是 AI 反欺诈、交易引擎、高级工程，技术护城河拉满！\n\n🔵 Bitget\n\n用户增长+VIP BD 为主，稳扎稳打抢亚洲和北美流量\n\n🟢 http://Gate.i", "https://x.com/0xkingskuan/status/2039195074979045731", ""], ["eleveresearch", 26767, 12, 30, 0, "2026-03-30", "十一的第 209 期新币投研： $BASED (Based) @BasedOneX\n\n总量 10 亿，初始流通 23.5%，盘前价 0.1，池子价 0.075\n\n1⃣上线时间（UTC+8）：\n- 币安Alpha：3.30 16:00\n- Coinbase、OKX、Bybit：链上有转账\n\n2⃣融资详情：\n- 第一轮：270 万（2022）\n- 第二轮：400 万（2025.9）\n- 第三轮：115", "https://x.com/eleveresearch/status/2038450642029576430", ""], ["mk66623", 26406, 12, 29, 0, "2026-04-04", "抖音对币圈知之甚少，还有人觉得“何一离了CZ什么都不是”。\n\n恰恰相反，现实中，没有哪个男人，不想急头白脸地跟何一谈场恋爱。\n\n这就好比谢娜之于张杰。\n\n当年和张杰同期的练习生现在都去哪了？基本全糊了。张杰为什么能一路长红，去数数他当年上了多少次快乐大本营就懂了。\n\n谢娜当年跟谁谈恋爱，谁就能把快本的门槛踏破，谁就能一直火。\n\n何一对CZ的托举也是同理。\n\n早在2014年，何一就已经是OKCoin", "https://x.com/mk66623/status/2040433590048268478", ""], ["zhuanfgghjnb", 25824, 69, 77, 0, "2026-03-30", "现在行情低迷，只有理财是最稳最香的\n\n前几天在OKX的闪赚，五天挖了价值660美金的 $MON\n\n玩理财的可以看 @Web3Daoge1 搞的那个理财网站\n\n里面各个CEX/DEX的年华标底都有，清晰一目了然\n\n理财第一是安全，其二在考虑年华，交易所的优先\n\n市场里面大部分人都是在行情好的时候赚了一些\n\n然后在熊市的时候就连本带利的一起就亏回去了\n\n所以有句古话是这么说的，打江山容易，守江山难\n\n", "https://x.com/zhuanfgghjnb/status/2038538995320434840", ""], ["0xlige", 25649, 10, 10, 1, "2026-03-31", "OKX @okxchinese 星球更新了，这次让星球变得更实用，任何事情一步直达\n\n1、帖子推荐 + 消息中心，双页结构\n\n2、不用截图、不用切 APP 帖子里直接就有下单入口！\n\n3、直播 + 群聊，找到你的圈子 让你的交易不再感到孤独\n\n4、暂时保密，下周惊喜 https://twitter.com/okxchinese/status/2038858837290037560 🪐 OKX星球，", "https://x.com/0xlige/status/2038866785324482577", "0xLige"], ["wenxue600", 25040, 29, 37, 0, "2026-04-01", "💥Abstract官宣本周TGE ，通过空投奖励社区\n\n😆Happy April Fools' Day 撸毛赛道从来没有像现在这样颓废。\n\n当越来越多的项目绞尽脑汁查女巫、明目张胆搞老鼠仓，延续多年的“古法撸毛”已经行不通，原生币圈这一亩三分地很难再结出硕果。\n\n不管你信不信，币圈的流动性正加速流向美股，以下是两个典型信号：\n\n①以币安为代表的中心化领头羊在加速推进链上美股\n②链上美股龙头MSX注", "https://x.com/wenxue600/status/2039343406288433411", "链上达人"], ["christianeth", 25003, 6, 31, 0, "2026-04-03", "随着近期Defi协议频频被盗，理财高收益和安全又成了最重要的话题。\n\nInfini的资管产品已经稳健运行整一年了，近期费后提供6%左右的APY\n\n资产构成：\n-10%左右存放在托管钱包以应对每天的流动性申购赎回\n-90%在Binance/Okx/Bybit/Bitget这几家主流交易所的机构交易账户\n\n策略构成：\n-主流币种的跨所价差套利\n-主流币种的跨所资费套利\n-所内期现和价差套利\n\nT+0灵", "https://x.com/christianeth/status/2039872130746311094", ""]], "bn_posts": [["jmhuolongguo", 501076, 400, "2026-04-01", "我说账户怎么多了 1BTC 🎁\n\n原来是我中奖了😂 https://pbs.twimg.com/media/HE0Rn5tasAAzeLa.jpg https://twitter.com/binancezh/status/2038970016079749267 恭喜用户 55807****  获得 1 枚 BTC💥\n\n这个比特币，归你了🫵 \n\n🏆一起见证币安比特币按钮活动的最终赢家！#Bitcoi", "https://x.com/jmhuolongguo/status/2039305590103748789", ""], ["qg7777", 414805, 622, "2026-04-01", "怪不得账户里多了1BTC\n原来中奖了!~ 😂😂 https://pbs.twimg.com/media/HEz6x3Wa0AAq5L5.png https://twitter.com/binancezh/status/2038970016079749267 恭喜用户 55807****  获得 1 枚 BTC💥\n\n这个比特币，归你了🫵 \n\n🏆一起见证币安比特币按钮活动的最终赢家！#BitcoinB", "https://x.com/qg7777/status/2039280597148020979", ""], ["crypto_pumpman", 383628, 359, "2026-04-03", "CZ @cz_binance 的新书真来了，中文版真叫「币安人生」\n\n另外，图书销售的所有收益将全部捐给慈善机构，表哥说了，写这个书，不为赚钱 😆 #币安人生 Update on my book Freedom of Money.\n\nThe launch is set for next week. Unless the editors pull me in for one more round 😂", "https://x.com/crypto_pumpman/status/2039920706390237638", ""], ["xxy177", 232414, 569, "2026-03-30", "为什么一定要去香港，下载注册一个众安银行App呢？你看，隔三差五就给你分红，虽然不多，因为我买得少，我买了50多款币，观察仓位，但是这种隔三差五就分红的，是你在链上，买那些假股票，是体验不到的，说跑路就跑路，人都在国外，你都没地方去报警。 https://pbs.twimg.com/media/HEp-cfubsAATQRx.jpg https://twitter.com/xxy177/statu", "https://x.com/xxy177/status/2038580823524552852", ""], ["bqlsj2023", 222374, 273, "2026-04-01", "币安刚公布了，禁止做市商主动做市的公告\n\n昨天晚上Siren就跌了80%来挑战币安\n\n感觉Siren割的这笔钱很难提出去了\n\n又或者，他们已经提出去了一笔\n\n这笔钱砸了，不要了？ https://pbs.twimg.com/media/HEyRNJYaAAA4LC4.jpg", "https://x.com/bqlsj2023/status/2039164393859227826", ""], ["wolfyxbt", 207746, 302, "2026-04-05", "但是我得提醒各位福利姬宝宝们\n\n币圈的富哥们一般都只用 USDT，所以你最好有个收 USDT 的地址，才可以收更多的门槛，所以我建议你点我下面的链接注册一个币安交易所账户。\n\n注册完之后，你就可以美美地收 USDT 门槛啦，不会操作的宝宝们可以私信我，杀破狼手把手教你。\n\n：http://binance.com/register?ref=SPL001 https://twitter.com/151", "https://x.com/wolfyxbt/status/2040773600257700079", ""], ["superl9", 191205, 81, "2026-04-03", "freedom of money不仅是CZ新书的名字\n\n也是当初创立币安时候的初心\n\n就像今年元旦币安致用户的一封信的结尾\n不管世界怎么变，Binance的初心其实很简单：Freedom of money  @cz_binance https://x.com/SuperL9/status/2039951265405575210/photo/1 https://twitter.com/cz_bina", "https://x.com/superl9/status/2039951265405575210", ""], ["_forab", 178469, 213, "2026-04-03", "没想到币安创始人 CZ 的书，也上了日区亚马逊，成功下单了。\n\n虽然现在可以预定，但是亚马逊显示，要 4 月 8 日才能阅读，也就是说现在购买后，还看不到书中的彩蛋内容。\n\n总共 355 页，比大多数企业家的自传要厚一些。 https://pbs.twimg.com/media/HE9WjjcbEAA-05J.jpg https://twitter.com/cz_binance/status/20", "https://x.com/_forab/status/2039945706493059122", ""], ["yyds123888", 153637, 219, "2026-04-04", "刚收到私信，有人被盗走 7.2 万 USDT，希望我帮忙联系 @evilcos。\n\n这个小偷非常有耐心，玩的是“放长线钓大鱼”。\n\n起初钱包里有 2.9 万 USDT，小偷一直隐忍没动手；直到受害人第二笔 4.3 万 USDT 转入，仅过了 3 分钟，7.2 万 USDT 便被悉数转走。\n\n更绝的是，这贼连最后的 60 TRX 手续费都没放过。TRX 单价才 0.3 U，这点手续费也就 18 U。", "https://x.com/yyds123888/status/2040336197424382335", "币圈福利哥"], ["xxy177", 137934, 1002, "2026-03-30", "🧠 如果你有条件、有能力，强烈建议办一张港澳通行证，花一天时间去香港走一趟。这可能是普通人接入全球成熟资本市场的最安全简单合规路径，没有之一⬇️\n\n过关时保管好那张入境小票（入境凭证）。然后：\n\n1. 准备设备：苹果手机切换香港Apple ID，安卓用户确保能访问Google Play（翻墙技能基本都会）。\n\n2. 下载ZA Bank 的App（众安银行，受香港最严格金融监管数字银行）。用过关小票", "https://x.com/xxy177/status/2038584705998848387", ""], ["_forab", 129146, 363, "2026-03-30", "全球最大的加密货币交易所币安，刚刚发布公告，表示正式进入原油期货市场，一口气上线了 WTI 原油、布伦特原油、NATGAS 天然气合约。\n\n该合约与此前上线的黄金 XAU、白银 XAG 合约一样，均是用美元稳定币 USDT，进行下单和开仓。\n\n数据显示，目前黄金、白银，已成该平台，第六大和第七大日交易量合约。 https://pbs.twimg.com/media/HEqi3ldaMAAhLXq.", "https://x.com/_forab/status/2038621153414316184", ""], ["xiaoyibtc", 128580, 1728, "2026-04-02", "针对建设扭羊歌的事情，说几句吧！\n\n首先对扭羊歌价格暴跌表示抱歉，不可否认价格暴跌我有很大的责任，也对很多相信我跟我一起建设的人，我感到非常的自责和惭愧！\n\n其实说句内心话，这两天看到很多人骂我，我很难受，为了建设扭羊歌，我花了近100万人民币，还花钱让榜一给表哥打币，而我把自己的币也打给了币安基金会，可是我只是一个二十几岁的小伙子，我真的没想到，我能闯这么大的祸，也真的没有想到一个建设者，会被骂", "https://x.com/xiaoyibtc/status/2039525102044463305", ""], ["xiaoshunli", 124254, 426, "2026-04-02", "币安真的怕被DEX干掉，因为CZ和何一内心知道，币安其实距离倒闭倒计时了。\n\n币安最怕Hyperliquid，如果满分是100分，那币安就是120分的恐惧。\n\n直接证据就是币安至今没上线Hype现货。但是你猜怎么着，OKX上线了，Coinbase上线了，为啥币安不上线？\n\n害怕，币安太害怕Hype这个强有力的对手了。因为怕，所以不可以给任何的机会，上Hype上现货。\n\n对真正的对手，只有赶尽杀绝。", "https://x.com/xiaoshunli/status/2039540298225987649", ""], ["hongshen6666btc", 118666, 172, "2026-04-01", "刚发现英伟达也上币安合约了？\n😂币圈山寨完犊子 https://pbs.twimg.com/media/HEyVSL6agAA6nMU.jpg", "https://x.com/hongshen6666btc/status/2039168906284429354", ""], ["uniswap12", 114642, 379, "2026-04-03", "新身份——全球畅销书作家！CZ的人生真是充满传奇！\n\n亚马逊商城官网显示，CZ @cz_binance 新书《Freedom of Money》（中文名：币安人生）已成为亚马逊加密类别新书畅销榜一。该书定价为 9.99 美元，读者预定后将在 4 月 8 日收到电子版。该书所有销售收入都将捐给慈善机构。", "https://x.com/uniswap12/status/2039962761497600108", ""], ["_forab", 112775, 358, "2026-04-03", "新书预定刚下单完，闲鱼就有深圳商家，挂 9.9 元人民币买盗版电子书了，而我是在亚马逊原价约 55 人民币买的。\n\n果然强者从不抱怨大环境，\n到哪里都能套利赚钱。 https://pbs.twimg.com/media/HE9xzZgb0AAvnxz.jpg https://twitter.com/_FORAB/status/2039945706493059122 没想到币安创始人 CZ 的书，也", "https://x.com/_forab/status/2039974521625801107", ""], ["_forab", 111575, 425, "2026-03-31", "经确认，全球最大的加密货币交易所币安，已正式上线预测市场功能。\n\n在今天下午 2 点，币安上的港澳台用户，收到了币安将推出预测市场的公告推送，然后行情页面出现了预测板块。\n\n根据公告披露，该预测市场由 Predict Fun 提供技术支持。这也意味着，头部加密交易所，开始正式涉入预测市场赛道。 https://pbs.twimg.com/media/HEuAQH7aMAA95SX.jpg", "https://x.com/_forab/status/2038864817503813674", ""], ["yyds123888", 110665, 155, "2026-04-04", "后续来了：\n\n小偷急于变现，把钱提到了火币。\n\n这下完蛋了，火币的实名精细到L3，叠加了身份证➕人脸识别。\n\n下午他被盗，我第一时间让他去联系币安、OKX、Bitget、火币、GATE，所有交易所都联系一遍，只要小偷敢变现，一定能让他露出马脚。\n\n没想到小偷这么急不可耐地就要变现了，交易所在这次被盗事件里，切实起到了用户资产安全屏障的作用。\n\n有任何进展，持续更新中... 刚收到私信，有人被盗走 ", "https://x.com/yyds123888/status/2040390045224566791", "币圈福利哥"], ["wolfyxbt", 103866, 196, "2026-04-04", "Coinglass 昨天发了 2026 年 Q1 的币圈 CEX 市场份额报告\n\n整份报告有点长，然后数据分成好几张图片来分别展示，我觉得有点难以阅读，这里直接帮大家把提到的数据都整合成一张图了，方便大家观看。\n\n• 现货方面：币安 > Gate > Bybit > Coinbase > OKX\n• 合约方面：币安 > OKX > Bybit > Gate > Bitget\n• 资沉方面：币安 >", "https://x.com/wolfyxbt/status/2040409275940680165", ""], ["xiaoyibtc", 102667, 444, "2026-03-30", "大家中午好 我想和大家聊聊 \n1.最近bscmem战壕都是日结\n   在币安人生后好像就没有社区文化了 大家都以日结为傲 天天在推特上晒自己一天p了多少钱\n完完全全已经偏离社区文化了 如果大家在这样坚持2个月那meme文化将不存在 也不会有任何一个币\n跑出高市值 除了阴谋盘 全部是自己的地址 那就可以宣布战壕失败  可能成为下一个铭文\n\n2.为什么现在meme慢慢的没有人玩了\n现在慢慢的产生了做饭", "https://x.com/xiaoyibtc/status/2038438633011880249", ""], ["pwenzhen76938", 94928, 169, "2026-04-04", "我朋友上个月把资产从某个小交易所转到币安\n\n我问他为什么\n\n他说：“我不在乎手续费高一点，我只想睡得着觉”\n\n这句话让我想起CoinGlass刚发的2026 Q1报告\n\n币安Q1日均用户存放的资产是1529亿美元，占主要CEX 的73.5%\n\n第二名OKX是159亿美元，只有币安的1/9.6\n\n这个差距比我想象的大得多\n\n---\n\n➢报告里提到一个观点：\n\n用户资产存放规模比交易量更能反映平台的安", "https://x.com/pwenzhen76938/status/2040307130222477330", ""], ["xiaoshunli", 92177, 353, "2026-03-30", "这轮熊市一定会发生的事情：\n\n币安爆雷\n\n微策略爆雷\n\nBTC跌回1万美金\n\n第三次世界大战开打\n\n台海危机\n\nAI泡沫破裂\n\n死几亿人\n\n保护好自己和家人，你只要撑过2030年活下来，就已经是未来的统治阶级。", "https://x.com/xiaoshunli/status/2038484953894416461", ""], ["bqlsj2023", 90813, 148, "2026-04-01", "我还说应该没人空这种山寨币，涨跌幅太恐怖\n\n然后就看到了晴天的晒单 @WilliamLu126 \n\n赚了132万刀\n\n直接赚了一个小目标 https://pbs.twimg.com/media/HEzpCdCbAAA9U_X.jpg https://twitter.com/Bqlsj2023/status/2039164393859227826 币安刚公布了，禁止做市商主动做市的公告\n\n昨天晚上S", "https://x.com/bqlsj2023/status/2039261295330128136", ""], ["roger9949", 90519, 373, "2026-04-03", "AI交易大势所趋\n我以为会是小所先吃螃蟹\n没想到币安步子那么大\n先提供服务的，先绑定用户\n先买的用户，先享受世界\nCrypto在这点上赢了\n向传统股票/资产市场\n攻城略地的同时\n根据地永远是\n更cool更年轻\n拥抱新技术\nDEGEN！\n\n试用了一下 @binancezh AI Pro\n转一点钱到AI帐户\n和主账户完全隔离\n安全舒适\n给他你的策略\n让他做交易方案\n最终确认\n他就自己跑起来了\n等结果再", "https://x.com/roger9949/status/2039911592930983938", "Roger波杰克"], ["0xsexybanana", 82210, 128, "2026-04-04", "太长不看版：\n- 现货市场，bn第一，市占率35%，第二名是gate\n- 合约市场，bn第一，市占率35%，第二名是okx\n-oi，bn第一，市占率30%，第二名是bybit\n-用户托管资产：bn断崖式第一，市占率73%，比第二名okx要多出十倍。okx又比gate多一倍。\n\n大家有没有想过为什么币安的用户资产储备领先这么多？\n我浅浅猜测两个原因：\n\n1）良好的流动性，为量化交易和结构化基金产品提", "https://x.com/0xsexybanana/status/2040321259905634497", ""], ["xxy177", 80043, 16, "2026-03-31", "不要买链上的假的美股\n\n都是假的\n\n还没被币圈骗够吗？\n\n去一趟香港又没多少钱\n\n买链上假美股怎么死的都不知道\n\n完全不可控，不透明，监管不严格\n\n分红也给你吃掉\n\n还额外收你高昂的管理费\n\n你是不是傻逼？币股可以归类于诈骗\n\n美股不是土狗炒短线\n\n那是几十年的事情，别偷懒，去执行\n\n香港开卡教程： https://twitter.com/xxy177/status/203858470599884", "https://x.com/xxy177/status/2038941106067673353", ""], ["xiejiayinbitget", 78891, 220, "2026-04-04", "Bitget  Q1 平均 OI $64亿，交易量和 OI 均在仅次于Bybit。237% 的 BTC 超额储备是独特优势。OI/PoR 1.14x 接近 Hyperliquid 基准，真实持仓健康。\n\n大哥我只认币安，其他其他友商不管怎么赞助怎么买榜怎么买排名，欢迎真实的交易用户来评测。\n\n1、Bitget 不刷交易量，所有交易数据有据可查，欢迎大众监督；\n2、Bitget 不对赌，没有内部做市", "https://x.com/xiejiayinbitget/status/2040444283560542500", ""], ["falali812", 78038, 114, "2026-03-30", "Ok交易所@star_okx 晒证据说@cz_binance 的能力不行，在ok交易所的时候还经常合同造假，我随便截了几张图。\n真实情况如何我们这种散户是不清楚的，每年的熊市都一样，各种大佬开始撕比，区块链好像再也回不到16-17那样纯净的样子了。 https://pbs.twimg.com/media/HEpcuXebMAEOsP8.jpg", "https://x.com/falali812/status/2038543978912677979", ""], ["xiaheth", 74268, 201, "2026-03-31", "《陪庄喝酒 赚钱抄底BTC的一天》\n《大佬说要和项目方谈恋爱》\n《web3女kol深圳水烟探店》\n\n感谢出镜的 #binance 睡衣 #foresightnews 日历 #bitgetwallet 拉布布 #水烟店 redroom https://x.com/xiaheth/status/2038671038264021135/video/1", "https://x.com/xiaheth/status/2038671038264021135", ""], ["binancezh", 73028, 685, "2026-04-02", "🛡️ #币安安全月 正式启动！\n\n🙋全网征集安全故事，分享即投稿：我们会将你的安全相关经历记录下来帮助到更多人\n\n你经历过、听过哪些骗局或成功防范的经历❓\n\n✅带 #币安安全月 RT 本推文分享你的故事，并填写表单即可参与：https://www.binance.com/en/survey/1289f468926747b19ab76a36be329b88\n\n🧧我们将抽10位获得100U安全奖励！ ", "https://x.com/binancezh/status/2039624878916346154", ""], ["0xzhaozhao", 70412, 235, "2026-04-04", "满屏的《币安人生》，\n可我高位加仓的币安人生，\n应该没机会回本了。 https://pbs.twimg.com/media/HFBsmj8bYAALHaY.jpg", "https://x.com/0xzhaozhao/status/2040250047418585190", "0xzhaozhao | MemeMax⚡️"], ["aoke_quant", 68630, 78, "2026-03-30", "恕我直言，被币安封号的，99.99% 都不是无辜的。\n\n以前也帮几个封号的用户反馈给币安解封的问题，跟币安的同学交涉了几个来回。结果币安给我反馈的信息和用户反馈给我的信息完全不符。\n\n用户反馈给我的信息只说对他被封号怎么惨，比如说很着急，没生活费，等着看病等等... \n\n实际上被封号的用户自己是清楚做了违规的事情，但是想试着看能不能解封掉，结果就是我被当枪使🤡\n\n所以，以后凡是有人找我推进解封币安", "https://x.com/aoke_quant/status/2038433175182143744", ""], ["leooo2099", 68464, 341, "2026-03-31", "华尔街快死了，但没人告诉你它是怎么死的\n\n做了20年美股，见过99泡沫，08雷曼，GME散户逼空。\n\n但我从来没见过这种事：2026年3月，有时候加密这边的特斯拉先动了0.7%，过了10分钟，纳斯达克的真实特斯拉才跟上来。\n\n以前永远是纳斯达克先动，全世界跟着动，现在第一次，反过来了。\n\n这不是一条新闻，这是整个金融秩序正在翻转的信号。\n\n一、你以为你在交易美股，其实你不知道那笔单子去了哪里\n\n先", "https://x.com/leooo2099/status/2039005118071460317", ""], ["wublockchain12", 68335, 116, "2026-04-01", "Vitalik: 如果对以太坊发动 51% 攻击需要多少钱 \n\n以太坊创始人 Vitalik @VitalikButerin  在曼谷接受采访时表示，即使币安成功对以太坊发动 51% 攻击，也将因罚没或少数派软分叉后的怠工惩罚损失数十亿美元 。\n\n他认为目前以太坊安全性已过剩，攻击成本高达 480 亿美元 。若适度放宽经济门槛，转而加强 P2P 网络层和共识层健壮性，以太坊整体会更加安全 。  \n", "https://x.com/wublockchain12/status/2039130630018277387", ""], ["0xmoon", 68034, 583, "2026-04-03", "打开CMC里面CEX排名前十\n\nHTX24小时现货交易量貌似仅次于Binance 排名第二\n\n@justinsuntron @HuobiGlobal @HTX_Molly #TronEcoStar https://x.com/0xMoon/status/2040038693680058459/photo/1", "https://x.com/0xmoon/status/2040038693680058459", ""], ["oragnes", 65035, 24, "2026-03-30", "每挖一枚倒亏 1.9 万美金，矿企不想挖了，开始集体扑向 AI！\n\n比特币矿企这轮最真实的变化，不是减半。\n不是算力波动。\n也不是谁又买了多少矿机。\n而是很多矿企已经不想靠挖矿活了。\n因为账根本算不过来。\n\n现在上市矿企挖一枚 BTC，平均现金成本已经接近 8 万美元。\n比特币价格却还在 6.8 万到 7 万附近。\n也就是说：\n\n每挖一枚，平均倒亏 1.9 万美元。\n\n这还怎么挖？\n\n1、矿企不是", "https://x.com/oragnes/status/2038587049398428129", ""], ["yingeai", 64431, 196, "2026-04-04", "币安这个贱货，以前叫他下降山寨币，不要上那么多垃圾山寨不听，等到韭菜都没了，现在下架山寨，上架美股合约。\n\n下周上QQQ、SPY、AAPL、TSM的USDT本位永续合约。\n\n贱货！@cz_binance", "https://x.com/yingeai/status/2040342973758726429", ""], ["connectfarm1", 63607, 61, "2026-04-01", "复盘一下刚才的错误\n\n简单来说就是我一边打电话一边看到了然后就直接币安钱包搜索没注意看就买了\n\n结果就gg 了\n\n只能说老天也在劝我收手\n\n把所有的链上群的置顶全部取消并且暂时屏蔽了\n\n在我所有的多线程运作的事情里\n\n在链上pvp 是性价比最低的事情了\n\n之所以玩可能是爱玩\n\n现在亏光了\n\n可以不玩了\n\n有空的时候能够全神贯注的时候再打开吧 吐了，居然能犯这种错误", "https://x.com/connectfarm1/status/2039246086859026720", "潜水观察员🇨🇳"], ["brc20niubi", 63355, 307, "2026-04-03", "目前这个阶段感觉币安人生是市场上为数不多值得购买的加密货币了\n\n首先就是cz回忆录，这件事很明显就是cz真正想给自己的书起的名字是那个英文名，而中文名字则是cz为了给币安人生这个meme赋能。事实上可以理解，cz奋斗了大半辈子写的第一本书，肯定是想取一个自己想要的名字的，所以才搞出了中英文两个名字。\n\n而目前看来英文名字也没什么上合约和现货的可能，那这件事情其实是极其利好币安人生的，毕竟英文名字只", "https://x.com/brc20niubi/status/2040046676753399868", ""], ["0xxiaoc", 60772, 139, "2026-03-30", "EDGE 疑似向币安Alpha转入了 500万枚代币\n占总代币量的 0.5%，价值270万\n\n大概率是全所大满贯了\nOkx，Bybit，Cobinase已经在进行充币测试\n希望社区空投的、撸Alpha、撸Boost的兄弟们都发财", "https://x.com/0xxiaoc/status/2038608726526177652", ""]], "bn_kols": [["_FORAB", "张晓翠 Scarlett Zhang", 6, 595138, ""], ["jmhuolongguo", "Yuki He 贺羽溪", 4, 571660, ""], ["XXY177", "Yuki He 贺羽溪", 6, 492029, ""], ["crypto_pumpman", "Mercy Luo 罗斐丹", 3, 391150, ""], ["Bqlsj2023", "张晓翠 Scarlett Zhang", 5, 387417, ""], ["yyds123888", "张晓翠 Scarlett Zhang", 4, 312488, "币圈福利哥"], ["connectfarm1", "张晓翠 Scarlett Zhang", 7, 225086, "潜水观察员🇨🇳"], ["Crypto_Cat888", "张晓翠 Scarlett Zhang", 20, 185677, ""], ["uniswap12", "Mercy Luo 罗斐丹", 15, 179523, ""], ["hongshen6666btc", "Mercy Luo 罗斐丹", 5, 170248, ""], ["ai_9684xtpa", "Mercy Luo 罗斐丹", 10, 156157, "Ai 姨"], ["0xXIAOc", "张晓翠 Scarlett Zhang", 6, 131402, ""], ["EmberCN", "Mercy Luo 罗斐丹", 6, 116100, "余烬"], ["Crypto_He", "董家昊 Cayne Dong", 8, 110436, "先知"], ["one_snowball", "Mercy Luo 罗斐丹", 7, 109936, ""], ["mk66623", "张晓翠 Scarlett Zhang", 4, 106804, ""], ["daidaibtc", "张晓翠 Scarlett Zhang", 2, 106760, "带带带比特"], ["BTC_Alert_", "Mercy Luo 罗斐丹", 6, 104306, "ALERT的会所"], ["FALALI812", "Yuki He 贺羽溪", 2, 99120, ""], ["0xzhaozhao", "董家昊 Cayne Dong", 5, 98296, "0xzhaozhao | MemeMax⚡️"], ["Moon1ightSt", "董家昊 Cayne Dong", 3, 97330, ""], ["jiujinshan2022", "张晓翠 Scarlett Zhang", 8, 92707, ""], ["roger9949", "Mercy Luo 罗斐丹", 1, 90519, "Roger波杰克"], ["silverfang88", "Mercy Luo 罗斐丹", 5, 88949, "子时"], ["lianyanshe", "董家昊 Cayne Dong", 5, 87182, ""], ["xiaheth", "Mercy Luo 罗斐丹", 2, 79616, ""], ["lijiuer1", "董家昊 Cayne Dong", 7, 70792, ""], ["nine_DeFi", "Mercy Luo 罗斐丹", 3, 69619, "nine_"], ["cryptobraveHQ", "Mercy Luo 罗斐丹", 4, 68428, ""], ["Web3Feng", "董家昊 Cayne Dong", 3, 67333, "风无向🦅"], ["anyaoyaoa", "董家昊 Cayne Dong", 12, 65928, "俺瑶瑶a 💢"], ["yuyue_chris", "Mercy Luo 罗斐丹", 5, 64729, "Yuyue"], ["wenxue600", "Mercy Luo 罗斐丹", 3, 64620, "链上达人"], ["brc20niubi", "张晓翠 Scarlett Zhang", 1, 63355, ""], ["wolfyxbt", "张晓翠 Scarlett Zhang", 1, 60343, ""], ["tyw1984", "Mercy Luo 罗斐丹", 1, 60051, "nanatang"], ["Ethcoin3", "董家昊 Cayne Dong", 8, 56271, "小V同学"], ["0xsexybanana", "Mercy Luo 罗斐丹", 4, 55000, ""], ["christianeth", "Mercy Luo 罗斐丹", 3, 52801, ""], ["xtony1314", "Yuki He 贺羽溪", 1, 50513, ""], ["thecryptoskanda", "Mercy Luo 罗斐丹", 1, 49112, ""], ["BTC99M", "董家昊 Cayne Dong", 5, 46707, ""], ["punk2898", "Yuki He 贺羽溪", 2, 46511, "punk"], ["ytflzyyds", "Mercy Luo 罗斐丹", 4, 45715, "以太坊老张"], ["Michael_Liu93", "Mercy Luo 罗斐丹", 1, 44368, ""], ["love_doge123", "Mercy Luo 罗斐丹", 3, 43420, ""], ["Evans666666", "张晓翠 Scarlett Zhang", 3, 37756, ""], ["maik2hello", "董家昊 Cayne Dong", 1, 37351, "请叫我 MaiK"], ["CoinToEarn", "董家昊 Cayne Dong", 5, 35357, "币赚"], ["OwenJin12", "Mercy Luo 罗斐丹", 3, 35133, ""]], "products": {"OKB": {"count": 39, "imp": 205791, "kols": ["punk2898", "sea_bitcoin", "impandoratechzh", "wangduanniao", "wqlove0909", "zhuanfgghjnb", "ryu_lcat", "bxiaokang", "xiaomaodou_", "0xjustdu", "gui_hei58942", "liuxiaoling933", "feixiaohaocom", "bx1818", "pandaba007", "congge918", "yuguan1209", "elivdvbruce"]}, "Orbit": {"count": 1, "imp": 5648, "kols": ["lubi366"]}, "OKX Wallet": {"count": 50, "imp": 455159, "kols": ["qiyumeme", "zizhong999", "lqp2021", "0xcrypto_max", "quxiansheng66", "0xcryptouni", "qkl2058", "0xhugoyyh", "tmel0211", "zhuanfgghjnb", "qidui1688", "btc99m", "wy_mask", "chinawhaleeth", "im23pds", "alan_crypto8", "0xkingskuan", "unicornbitcoin", "love520easy", "wublockchain12", "timmasyacn", "zf_lab", "blocktempo"]}, "OpenClaw": {"count": 22, "imp": 158633, "kols": ["yuyue_chris", "0xnathanwalk", "tmel0211", "wuhuoqiu", "sea_bitcoin", "yueya_eth", "love520easy", "zhuanfgghjnb", "xiaomaodou_", "ohxiyu", "kaikaibtc", "liuxiaoling933", "rocky_bitcoin", "jaminlee2023", "sadd_asd77675", "cointoearn", "tychozzz", "web3_xiaoyao"]}, "Onchain OS": {"count": 27, "imp": 107302, "kols": ["0xaurskyo", "ccy1871", "chinin_09", "i_m_m_", "dtdt666", "isadora288881", "bixiaochao", "yyds123888", "wqlove0909", "dongbimao", "sodislikea", "cryptopilot3226", "hoshino_sasaki", "zuijiu61637", "btckik", "cryptochunshui", "liyidongg", "0xtiga_h", "gittrend0x", "jun666xx", "yahbtc", "bubblebing_666", "taozi0929", "laodi888", "renee7eth"]}, "OKX合约": {"count": 59, "imp": 906662, "kols": ["yiyixmb", "bnbtc8", "911nft_xyz", "airdropalchemis", "marktowin8", "rocky_bitcoin", "dtdt666", "wendy_2026", "wuhuoqiu", "0xanonnnn", "wolfyxbt", "wqlove0909", "lingboweibu319", "0xsexybanana", "liuxiaoling933", "0xcryptouni", "pwenzhen76938", "lugeweb3", "shanshan2018n", "leooo2099", "bitpushnewscn", "michael_liu93", "yuyue_chris", "punk2898", "tmel0211", "junshao_666", "sea_bitcoin", "0xchubai", "albertcoinglass", "qianmutong", "cryptolfggo", "cryptochunshui", "eleveresearch", "jaminlee2023", "wy_mask", "sixteen_e16", "phyrexni", "guiyuan313", "0xnathanwalk", "bqlsj2023", "crypto_blueboy", "oooooyoung", "0xjason", "uniswap12", "laobaishare", "feixiaohaocom", "christianeth", "xiaoayi1997", "yuexiaoyu", "zsf11221"]}, "Agentic Wallet": {"count": 3, "imp": 16735, "kols": ["tmel0211", "pandaba007"]}, "OKX赚币": {"count": 12, "imp": 105018, "kols": ["sea_bitcoin", "kehenrya8", "hendi_pardede", "wqlove0909", "ryu_lcat", "zhuanfgghjnb", "zsf11221", "tyw1984", "wy_mask", "yuexiaoyu", "kelseyweb3vc", "monkeyjiang"]}}, "daily": {"2026-04-05": {"count": 54, "imp": 251654}, "2026-03-30": {"count": 178, "imp": 1110591}, "2026-04-02": {"count": 191, "imp": 1219595}, "2026-04-03": {"count": 186, "imp": 1209283}, "2026-04-01": {"count": 127, "imp": 459563}, "2026-03-31": {"count": 136, "imp": 794787}, "2026-04-04": {"count": 132, "imp": 1293810}}, "sentiment": {"positive": 58, "negative": 166, "neutral": 372}};
+
+const K=D.partners.map(k=>({h:k[0],bd:k[1],ot:k[2],oi:k[3],bt:k[4],bi:k[5],tt:k[6],ti:k[7],op:k[8],on:k[9],ou:k[10],tags:k[11],prods:k[12],tier:k[13],cost:k[14],avgP:k[15],fans:k[16],nick:k[17]}));
+const NP=D.non_partners.map(k=>({h:k[0],bd:k[1],ot:k[2],oi:k[3],bt:k[4],bi:k[5],tt:k[6],ti:k[7],op:k[8],on:k[9],ou:k[10],tags:k[11],prods:k[12],nick:k[13]||''}));
+const P=D.posts.map(p=>({h:p[0],imp:p[1],lk:p[2],cm:p[3],snt:p[4],dt:p[5],desc:p[6],link:p[7],nick:p[8]||''}));
+const BP=D.bn_posts.map(p=>({h:p[0],imp:p[1],lk:p[2],dt:p[3],desc:p[4],link:p[5],nick:p[6]||''}));
+const BK=D.bn_kols.map(k=>({h:k[0],bd:k[1],bt:k[2],bi:k[3],nick:k[4]||''}));
+// Nick lookup helper: GSheet nicks + handle fallback
+const NM={};K.forEach(k=>{if(k.nick)NM[k.h.toLowerCase()]=k.nick});
+const gn=h=>{const n=NM[h.toLowerCase()];return n?n:h};
+const PR=D.products,DY=D.daily,SN=D.sentiment;
+
+const fmt=n=>n>=1e6?(n/1e6).toFixed(1)+'M':n>=1e3?(n/1e3).toFixed(1)+'K':n+'';
+const fN=n=>n.toLocaleString();
+const pct=(a,b)=>b?((a/b)*100).toFixed(1)+'%':'0%';
+const tH=tags=>tags.map(t=>`<span class="tag t-${t}">${t}</span>`).join('');
+const sB=s=>`<span class="sbdg ${s>=60?'sbdg-h':s>=35?'sbdg-m':'sbdg-l'}">${s}</span>`;
+const lnk=(h,n)=>`<a class="kl" href="https://x.com/${h}" target="_blank">${n||gn(h)}</a><span style="font-size:8px;color:var(--tx3);margin-left:3px">@${h}</span>`;
+const plnk=(url,t)=>url?`<a class="pl" href="${url}" target="_blank">${t||'↗'}</a>`:'';
+
+// BD agg
+const BD={};K.forEach(k=>{if(!BD[k.bd])BD[k.bd]={n:0,ot:0,oi:0,bt:0,bi:0,okxKols:0};const b=BD[k.bd];b.n++;b.ot+=k.ot;b.oi+=k.oi;b.bt+=k.bt;b.bi+=k.bi;if(k.ot>0)b.okxKols++});
+
+// Orbit state
+let OS=JSON.parse(localStorage.getItem('os5')||'{}');
+const saveOS=()=>localStorage.setItem('os5',JSON.stringify(OS));
+
+// Scoring
+function calcScore(k){
+  const tS=k.ot>=8?100:k.ot>=4?60:k.ot>=1?30:0;
+  const iS=k.oi>0?Math.min(100,Math.log10(Math.max(k.oi,1))*20):0;
+  const ps=P.filter(p=>p.h.toLowerCase()===k.h.toLowerCase());
+  const intR=ps.length?ps.reduce((s,p)=>s+(p.lk+p.cm)/Math.max(p.imp,1),0)/ps.length*10000:0;
+  const pS=k.prods.length>=2?80:k.prods.length?50:20;
+  const bnP=k.bt>0&&k.ot>0?Math.max(0,100-k.bt/k.ot*30):k.bt>0?20:80;
+  return Math.round(tS*.2+iS*.2+Math.min(100,intR)*.15+pS*.15+bnP*.15+50*.15);
+}
+K.forEach(k=>k.score=calcScore(k));
+
+// Tab switch
+function go(t){document.querySelectorAll('.sec').forEach(s=>s.classList.remove('on'));document.querySelectorAll('.nb').forEach(b=>b.classList.remove('on'));document.getElementById('s-'+t).classList.add('on');event.target.classList.add('on')}
+
+// === RENDER ===
+function init(){rStats();rOv();rKol();rProd();rDisc();rOrb();rConv();
+  // Populate filters
+  const bds=[...new Set(K.map(k=>k.bd))];document.getElementById('kBD').innerHTML='<option value="all">全部BD</option>'+bds.map(b=>`<option value="${b}">${b.split(' ')[0]}</option>`).join('');
+  const tags=[...new Set(K.flatMap(k=>k.tags))].sort();document.getElementById('kTag').innerHTML='<option value="all">全赛道</option>'+tags.map(t=>`<option value="${t}">${t}</option>`).join('');
+}
+
+function rStats(){
+  const ot=K.reduce((s,k)=>s+k.ot,0),oi=K.reduce((s,k)=>s+k.oi,0),bt_=K.reduce((s,k)=>s+k.bt,0),bi_=K.reduce((s,k)=>s+k.bi,0);
+  const okxK=K.filter(k=>k.ot>0).length,oJ=Object.values(OS).filter(v=>v==='joined').length;
+  document.getElementById('SR').innerHTML=`
+<div class="sc"><div class="sl">合作KOL</div><div class="sv sb">${K.length}</div><div class="ss">${Object.keys(BD).length} BD</div></div>
+<div class="sc"><div class="sl">OKX提及</div><div class="sv sg">${ot}</div><div class="ss">曝光 ${fmt(oi)}</div></div>
+<div class="sc"><div class="sl">BN提及</div><div class="sv sgl">${bt_}</div><div class="ss">曝光 ${fmt(bi_)}</div></div>
+<div class="sc"><div class="sl">OKX/BN比</div><div class="sv ${bt_>0&&ot/bt_>=.3?'sg':'sr_'}">${bt_>0?(ot/bt_).toFixed(2):'∞'}</div><div class="ss">目标≥0.5</div></div>
+<div class="sc"><div class="sl">绩效达标</div><div class="sv sg">${K.filter(k=>k.score>=60).length}</div><div class="ss">/ ${K.length}</div></div>
+<div class="sc"><div class="sl">Orbit入驻</div><div class="sv sp">${oJ}</div><div class="ss">${K.length?pct(oJ,K.length):'--'}</div></div>`;
+}
+
+function rOv(){
+  // Compare bars
+  const ot=K.reduce((s,k)=>s+k.ot,0),oi=K.reduce((s,k)=>s+k.oi,0),bt_=K.reduce((s,k)=>s+k.bt,0),bi_=K.reduce((s,k)=>s+k.bi,0);
+  const mt=Math.max(ot,bt_),mi=Math.max(oi,bi_);
+  document.getElementById('cmpBar').innerHTML=`
+<div style="margin-bottom:14px"><div style="font-size:10px;color:var(--tx3);margin-bottom:4px">推文数</div>
+<div class="br"><div class="bl" style="width:40px;color:var(--acc)">OKX</div><div class="bt"><div class="bf o" style="width:${ot/mt*100}%">${ot}</div></div></div>
+<div class="br"><div class="bl" style="width:40px;color:var(--bn)">BN</div><div class="bt"><div class="bf b" style="width:${bt_/mt*100}%">${bt_}</div></div></div></div>
+<div><div style="font-size:10px;color:var(--tx3);margin-bottom:4px">曝光</div>
+<div class="br"><div class="bl" style="width:40px;color:var(--acc)">OKX</div><div class="bt"><div class="bf o" style="width:${oi/mi*100}%">${fmt(oi)}</div></div></div>
+<div class="br"><div class="bl" style="width:40px;color:var(--bn)">BN</div><div class="bt"><div class="bf b" style="width:${bi_/mi*100}%">${fmt(bi_)}</div></div></div></div>`;
+
+  // Daily
+  const ds=Object.keys(DY).sort(),mdi=Math.max(...ds.map(d=>DY[d].imp));
+  document.getElementById('dailyC').innerHTML=`<div style="height:110px;display:flex;gap:4px;align-items:flex-end;padding:6px 0">${ds.map(d=>`<div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:2px"><div style="font-size:8px;color:var(--tx3)">${fmt(DY[d].imp)}</div><div style="width:100%;height:${DY[d].imp/mdi*100}%;background:linear-gradient(180deg,var(--acc),rgba(0,212,170,.3));border-radius:3px 3px 0 0;min-height:3px"></div><div style="font-size:7px;color:var(--tx3)">${d.slice(5)}</div></div>`).join('')}</div>`;
+
+  // OKX TOP KOL
+  const topK=[...K].filter(k=>k.ot>0).sort((a,b)=>b.oi-a.oi).slice(0,12);
+  document.getElementById('okxTop').innerHTML=`<table class="tbl"><thead><tr><th>#</th><th>昵称</th><th>BD</th><th>OKX</th><th>曝光</th><th>绩效</th><th>标签</th></tr></thead><tbody>${topK.map((k,i)=>`<tr><td>${i+1}</td><td>${lnk(k.h,k.nick)}</td><td style="font-size:9px">${k.bd.split(' ')[0]}</td><td>${k.ot}</td><td style="color:var(--acc)">${fmt(k.oi)}</td><td>${sB(k.score)}</td><td>${tH(k.tags.slice(0,2))}</td></tr>`).join('')}</tbody></table>`;
+
+  // OKX TOP Posts (clickable)
+  document.getElementById('okxPosts').innerHTML=`<table class="tbl"><thead><tr><th>#</th><th>KOL</th><th>曝光</th><th>日期</th><th>内容</th><th></th></tr></thead><tbody>${P.slice(0,12).map((p,i)=>`<tr><td>${i+1}</td><td>${lnk(p.h,p.nick)}</td><td style="color:var(--acc)">${fmt(p.imp)}</td><td style="font-size:8px">${p.dt.slice(5)}</td><td style="max-width:180px;overflow:hidden;text-overflow:ellipsis;font-size:9px;color:var(--tx2)">${p.desc.slice(0,45)}...</td><td>${plnk(p.link,'↗ 原文')}</td></tr>`).join('')}</tbody></table>`;
+
+  // BN TOP KOL (with "是否已合作" flag)
+  const builderSet=new Set(K.map(k=>k.h.toLowerCase()));
+  document.getElementById('bnTop').innerHTML=`<table class="tbl"><thead><tr><th>#</th><th>昵称</th><th>BN条</th><th>BN曝光</th><th>合作状态</th><th>BD</th><th>操作</th></tr></thead><tbody>${BK.slice(0,15).map((k,i)=>{
+    const isB=builderSet.has(k.h.toLowerCase());
+    const kol=K.find(x=>x.h.toLowerCase()===k.h.toLowerCase());
+    const hasOkx=kol&&kol.ot>0;
+    return `<tr><td>${i+1}</td><td>${lnk(k.h,k.nick||gn(k.h))}</td><td style="color:var(--bn)">${k.bt}</td><td style="color:var(--bn)">${fmt(k.bi)}</td><td>${isB?(hasOkx?'<span class="st st-a">合作中·有OKX</span>':'<span class="st st-w">合作中·无OKX</span>'):'<span class="st st-n">未合作</span>'}</td><td style="font-size:8px">${k.bd.split(' ')[0]}</td><td>${!isB?'<span style="color:var(--blu);font-size:9px;cursor:pointer">→ BD跟进</span>':''}</td></tr>`}).join('')}</tbody></table>`;
+
+  // BN TOP Posts
+  document.getElementById('bnPosts').innerHTML=`<table class="tbl"><thead><tr><th>#</th><th>KOL</th><th>曝光</th><th>日期</th><th>内容</th><th></th></tr></thead><tbody>${BP.slice(0,10).map((p,i)=>`<tr><td>${i+1}</td><td>${lnk(p.h,p.nick||gn(p.h))}</td><td style="color:var(--bn)">${fmt(p.imp)}</td><td style="font-size:8px">${p.dt.slice(5)}</td><td style="max-width:180px;overflow:hidden;text-overflow:ellipsis;font-size:9px;color:var(--tx2)">${p.desc.slice(0,45)}...</td><td>${plnk(p.link,'↗')}</td></tr>`).join('')}</tbody></table>`;
+
+  // Sentiment
+  const tot=SN.positive+SN.negative+SN.neutral;
+  document.getElementById('sentC').innerHTML=`<div style="display:flex;height:18px;border-radius:9px;overflow:hidden;margin-bottom:8px"><div style="width:${SN.positive/tot*100}%;background:var(--acc)"></div><div style="width:${SN.neutral/tot*100}%;background:#868e96"></div><div style="width:${SN.negative/tot*100}%;background:var(--wrn)"></div></div><div style="display:flex;gap:12px;font-size:10px"><div><span class="dot dot-p"></span> 正${SN.positive}</div><div><span class="dot dot-u"></span> 中${SN.neutral}</div><div><span class="dot dot-n"></span> 负${SN.negative}</div></div>`;
+
+  // Tags
+  const tc={};K.forEach(k=>k.tags.forEach(t=>{tc[t]=(tc[t]||0)+1}));
+  document.getElementById('tagC').innerHTML=`<div style="display:flex;flex-wrap:wrap;gap:3px">${Object.entries(tc).sort((a,b)=>b[1]-a[1]).map(([t,c])=>`<span class="tag t-${t}" style="padding:3px 7px">${t} <b>${c}</b></span>`).join('')}</div>`;
+
+  // Product quick
+  document.getElementById('prodQ').innerHTML=Object.entries(PR).sort((a,b)=>b[1].count-a[1].count).map(([n,d])=>`<div style="display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px solid var(--brd)"><span style="font-size:10px">${n}</span><span style="font-size:9px;color:var(--acc);font-family:'JetBrains Mono'">${d.count}条·${fmt(d.imp)}</span></div>`).join('');
+}
+
+// === TAB 2: 合作KOL ===
+function rKol(){
+  const q=document.getElementById('kS').value.toLowerCase(),bd=document.getElementById('kBD').value,tag=document.getElementById('kTag').value,sort=document.getElementById('kSort').value;
+  let f=K.slice();
+  if(bd!=='all')f=f.filter(k=>k.bd===bd);if(tag!=='all')f=f.filter(k=>k.tags.includes(tag));
+  if(q)f=f.filter(k=>k.h.toLowerCase().includes(q)||k.bd.toLowerCase().includes(q)||(k.nick||'').toLowerCase().includes(q));
+  const sk={okx_i:(a,b)=>b.oi-a.oi,score:(a,b)=>b.score-a.score,okx_t:(a,b)=>b.ot-a.ot,bn_t:(a,b)=>b.bt-a.bt}[sort]||((a,b)=>b.oi-a.oi);
+  f.sort(sk);document.getElementById('kolN').textContent=f.length;
+  document.getElementById('kolTbl').innerHTML=`<table class="tbl"><thead><tr><th>#</th><th>昵称</th><th>层级</th><th>BD</th><th>OKX条</th><th>OKX曝光</th><th>BN条</th><th>费用</th><th>绩效</th><th>状态</th><th>标签</th></tr></thead><tbody>${f.map((k,i)=>{
+    const st=k.score>=60?'a':k.score>=35?'w':'d';
+    const tierC={'S':'var(--acc)','A':'var(--blu)','B':'var(--gld)','C':'var(--tx3)'}[k.tier]||'var(--tx3)';
+    return `<tr><td>${i+1}</td><td>${lnk(k.h,k.nick)}</td><td style="color:${tierC};font-weight:700;font-size:12px">${k.tier||'-'}</td><td style="font-size:8px">${k.bd.split(' ')[0]}</td><td style="color:var(--acc)">${k.ot}</td><td style="color:var(--acc)">${fN(k.oi)}</td><td style="color:var(--bn)">${k.bt}</td><td style="font-family:'JetBrains Mono';font-size:9px">${k.cost?k.cost+'U':'-'}</td><td>${sB(k.score)}</td><td><span class="st st-${st}">${st==='a'?'达标':st==='w'?'观察':'淘汰'}</span></td><td>${tH(k.tags.slice(0,2))}</td></tr>`}).join('')}</tbody></table>`;
+
+  // BD bars
+  const bl=Object.entries(BD).sort((a,b)=>b[1].oi-a[1].oi),mx=Math.max(...bl.map(b=>Math.max(b[1].oi,b[1].bi)));
+  document.getElementById('bdBar').innerHTML=bl.map(([n,d])=>`<div style="margin-bottom:10px"><div style="font-size:10px;font-weight:600;margin-bottom:3px">${n.split(' ')[0]} <span style="color:var(--tx3);font-weight:400">(${d.n})</span></div><div class="br"><div class="bl" style="width:30px;font-size:8px">OKX</div><div class="bt"><div class="bf o" style="width:${d.oi/mx*100}%">${fmt(d.oi)}</div></div></div><div class="br"><div class="bl" style="width:30px;font-size:8px">BN</div><div class="bt"><div class="bf b" style="width:${d.bi/mx*100}%">${fmt(d.bi)}</div></div></div></div>`).join('');
+
+  // BD Overview Charts (3 horizontal bars - pure CSS)
+  const bdSorted=bl;
+  const bdColorMap=['#FFB74D','#B0BEC5','#FF8A65','#9FA8DA','#CE93D8','#80CBC4'];
+  const bdNameColor={};bdSorted.forEach(([n],i)=>{bdNameColor[n.split(' ')[0]]=bdColorMap[i%6]});
+  function bdBarChart(data,fmtFn){
+    const mx=Math.max(...data.map(d=>d.v),1);
+    return data.map(d=>`<div style="display:flex;align-items:center;margin-bottom:6px"><div style="width:70px;font-size:10px;font-weight:600;flex-shrink:0;text-align:right;padding-right:8px">${d.name}</div><div style="flex:1;background:var(--bg2);border-radius:4px;height:18px;overflow:hidden"><div style="height:100%;width:${d.v/mx*100}%;background:${bdNameColor[d.name]||'#FFB74D'};border-radius:4px;display:flex;align-items:center;padding-left:6px;font-size:9px;font-weight:600;color:#1a1a28;min-width:fit-content">${fmtFn(d.v)}</div></div></div>`).join('');
+  }
+  const bdTwData=bdSorted.map(([n,d])=>({name:n.split(' ')[0],v:d.ot})).sort((a,b)=>b.v-a.v);
+  const bdImpData=bdSorted.map(([n,d])=>({name:n.split(' ')[0],v:d.oi})).sort((a,b)=>b.v-a.v);
+  const bdKolData=bdSorted.map(([n,d])=>({name:n.split(' ')[0],v:d.okxKols})).sort((a,b)=>b.v-a.v);
+  document.getElementById('bdChartTw').innerHTML=bdBarChart(bdTwData,v=>v);
+  document.getElementById('bdChartImp').innerHTML=bdBarChart(bdImpData,v=>fmt(v));
+  document.getElementById('bdChartKol').innerHTML=bdBarChart(bdKolData,v=>v);
+
+  // Alerts
+  const al=[];
+  K.forEach(k=>{
+    if(k.ot===0&&k.tt>0)al.push({t:'w',m:`@${k.h} 本周0条OKX推文(总${k.tt}条)`});
+    if(k.bt>k.ot*3&&k.bt>2)al.push({t:'w',m:`@${k.h} BN(${k.bt})远超OKX(${k.ot})`});
+    if(k.score<35)al.push({t:'d',m:`@${k.h} 绩效分${k.score}，建议淘汰`});
+  });
+  document.getElementById('alerts').innerHTML=al.length?al.slice(0,10).map(a=>`<div style="padding:5px 8px;margin-bottom:3px;border-radius:5px;font-size:9px;background:${a.t==='d'?'rgba(255,107,107,.1)':'rgba(255,212,59,.1)'};border:1px solid ${a.t==='d'?'rgba(255,107,107,.2)':'rgba(255,212,59,.2)'}">${a.t==='d'?'🔴':'🟡'} ${a.m}</div>`).join(''):'<div style="font-size:10px;color:var(--tx3)">暂无异常</div>';
+}
+
+// === TAB 3: Products ===
+function rProd(){
+  const ps=Object.entries(PR).sort((a,b)=>b[1].count-a[1].count),mx=Math.max(...ps.map(p=>p[1].count));
+  document.getElementById('prodGrid').innerHTML=ps.map(([n,d])=>`<div class="cd" style="padding:14px"><div style="font-size:12px;font-weight:600;margin-bottom:5px">${n}</div><div style="display:flex;gap:10px;margin:5px 0;font-size:10px;color:var(--tx2)">推文 <b style="color:var(--acc)">${d.count}</b> · 曝光 <b style="color:var(--acc)">${fmt(d.imp)}</b> · KOL <b>${d.kols.length}</b></div><div class="bt" style="height:5px"><div class="bf o" style="width:${d.count/mx*100}%"></div></div><div style="margin-top:5px;font-size:8px;color:var(--tx3)">${d.kols.slice(0,4).map(h=>'@'+h).join(' · ')}</div></div>`).join('');
+  const all=[];ps.forEach(([n,d])=>d.kols.forEach(h=>{const k=K.find(x=>x.h.toLowerCase()===h.toLowerCase());if(k)all.push({...k,prod:n})}));
+  const seen=new Set(),u=all.filter(k=>{const key=k.h+'|'+k.prod;if(seen.has(key))return false;seen.add(key);return true}).sort((a,b)=>b.oi-a.oi);
+  document.getElementById('prodTbl').innerHTML=`<table class="tbl"><thead><tr><th>产品</th><th>KOL</th><th>BD</th><th>OKX曝光</th></tr></thead><tbody>${u.slice(0,40).map(k=>`<tr><td><span class="tag t-链上">${k.prod}</span></td><td>${lnk(k.h)}</td><td style="font-size:8px">${k.bd.split(' ')[0]}</td><td style="color:var(--acc)">${fmt(k.oi)}</td></tr>`).join('')}</tbody></table>`;
+}
+
+// === TAB 4: Discover ===
+function rDisc(){
+  const sort=document.getElementById('dSort').value;
+  // Non-partners from CRM (not in GSheet)
+  let list=NP.map(k=>({...k,src:'CRM'}));
+  if(sort==='bn_i')list.sort((a,b)=>b.bi-a.bi);
+  else if(sort==='bn_t')list.sort((a,b)=>b.bt-a.bt);
+  else list.sort((a,b)=>(b.oi+b.bi)-(a.oi+a.bi));
+  document.getElementById('discTbl').innerHTML=`<table class="tbl"><thead><tr><th>#</th><th>KOL</th><th>OKX条</th><th>OKX曝光</th><th>BN条</th><th>BN曝光</th><th>总曝光</th><th>赛道</th><th>BD跟进</th></tr></thead><tbody>${list.slice(0,50).map((k,i)=>`<tr style="background:rgba(77,171,247,.03)"><td>${i+1}</td><td>${lnk(k.h,k.nick||gn(k.h))}</td><td style="color:var(--acc)">${k.ot}</td><td style="color:var(--acc)">${fmt(k.oi)}</td><td style="color:var(--bn)">${k.bt}</td><td style="color:var(--bn)">${fmt(k.bi)}</td><td style="font-weight:600">${fmt(k.oi+k.bi)}</td><td>${tH(k.tags.slice(0,2))}</td><td style="font-size:8px">${k.bd.split(' ')[0]}</td></tr>`).join('')}</tbody></table>`;
+
+  // Competitor overview
+  const comps=[{n:'OKX',t:K.reduce((s,k)=>s+k.ot,0),i:K.reduce((s,k)=>s+k.oi,0),c:'var(--acc)'},{n:'Binance',t:K.reduce((s,k)=>s+k.bt,0),i:K.reduce((s,k)=>s+k.bi,0),c:'var(--bn)'},{n:'Bybit',t:40,i:682869,c:'#ff922b'},{n:'Bitget',t:36,i:451297,c:'#845ef7'}];
+  const mxT=Math.max(...comps.map(c=>c.t)),mxI=Math.max(...comps.map(c=>c.i));
+  document.getElementById('compOv').innerHTML=comps.map(c=>`<div class="br"><div class="bl" style="width:50px">${c.n}</div><div class="bt"><div style="height:100%;width:${c.t/mxT*100}%;background:${c.c};border-radius:5px;display:flex;align-items:center;padding-left:5px;font-size:8px;font-weight:600;color:var(--bg)">${c.t}条/${fmt(c.i)}</div></div></div>`).join('');
+}
+
+function exportCSV(){
+  const rows=[['Handle','OKX推文','OKX曝光','BN推文','BN曝光','总曝光','赛道','BD']];
+  NP.forEach(k=>{rows.push([k.h,k.ot,k.oi,k.bt,k.bi,k.oi+k.bi,k.tags.join('/'),k.bd])});
+  const csv=rows.map(r=>r.join(',')).join('\n');
+  const a=document.createElement('a');a.href=URL.createObjectURL(new Blob(['\ufeff'+csv],{type:'text/csv'}));a.download='bn_kol_prospect.csv';a.click();
+  toast('✅ BN KOL名单已导出');
+}
+
+// === TAB 5: Orbit ===
+function rOrb(){
+  const allH=K.filter(k=>k.ot>=1).map(k=>k.h);
+  const joined=allH.filter(h=>(OS[h.toLowerCase()]||'')==='joined').length;
+  document.getElementById('oFill').style.width=allH.length?`${joined/allH.length*100}%`:'0%';
+  document.getElementById('oPct').textContent=allH.length?`${joined}/${allH.length} (${(joined/allH.length*100).toFixed(0)}%)`:'--';
+  document.getElementById('orbTbl').innerHTML=`<table class="tbl"><thead><tr><th>KOL</th><th>入驻状态</th><th>OKX条</th><th>OKX曝光</th><th>操作</th></tr></thead><tbody>${allH.map(h=>{const st=OS[h.toLowerCase()]||'none';const k=K.find(x=>x.h===h);return `<tr><td>${lnk(h)}</td><td><span class="st ${st==='joined'?'st-a':st==='invited'?'st-w':'st-n'}">${st==='joined'?'🪐已入驻':st==='invited'?'📨已邀请':'❓未邀请'}</span></td><td>${k?k.ot:'-'}</td><td>${k?fmt(k.oi):'-'}</td><td><select onchange="setOS('${h}',this.value)" style="background:var(--bg3);color:var(--tx);border:1px solid var(--brd);border-radius:4px;font-size:8px;padding:2px"><option value="none" ${st==='none'?'selected':''}>未邀请</option><option value="invited" ${st==='invited'?'selected':''}>已邀请</option><option value="joined" ${st==='joined'?'selected':''}>已入驻</option></select></td></tr>`}).join('')}</tbody></table>`;
+}
+function setOS(h,v){OS[h.toLowerCase()]=v;saveOS();rOrb();rStats()}
+function showOrbitModal(){
+  const un=K.filter(k=>k.ot>=1&&(OS[k.h.toLowerCase()]||'')==='none').map(k=>k.h);
+  document.getElementById('mC').innerHTML=`<h3>🪐 批量标记</h3><p style="font-size:11px;color:var(--tx2);margin-bottom:10px">未邀请: ${un.length}人</p><div style="max-height:280px;overflow-y:auto">${un.map(h=>`<label style="display:flex;align-items:center;gap:6px;padding:3px 0;font-size:11px;cursor:pointer"><input type="checkbox" value="${h}"> @${h}</label>`).join('')}</div><div style="display:flex;gap:6px;margin-top:12px"><button class="btn btn-p" onclick="batchOS('invited')">📨标记已邀请</button><button class="btn btn-s" onclick="batchOS('joined')">🪐标记已入驻</button><button class="btn btn-s" onclick="cM()">取消</button></div>`;
+  document.getElementById('mOv').classList.add('show');
+}
+function batchOS(v){document.querySelectorAll('#mC input:checked').forEach(cb=>{OS[cb.value.toLowerCase()]=v});saveOS();cM();rOrb();rStats();toast('✅ 已更新')}
+
+// === TAB 6: Conversion ===
+function rConv(){
+  const tT=K.reduce((s,k)=>s+k.ot,0),pM=Object.values(PR).reduce((s,p)=>s+p.count,0),wL=P.filter(p=>p.desc.match(/http|链接|传送门/i)).length;
+  const fd=[{l:'OKX推文',v:tT,c:'var(--acc)'},{l:'提及产品',v:pM,c:'var(--blu)'},{l:'含链接',v:wL,c:'var(--pur)'},{l:'链接点击',v:'(需UTM)',c:'var(--tx3)'}];
+  document.getElementById('funnel').innerHTML=fd.map((f,i)=>`<div style="margin-bottom:6px"><div style="display:flex;justify-content:space-between;font-size:9px;margin-bottom:2px"><span>${f.l}</span><span style="color:${f.c};font-weight:600">${typeof f.v==='number'?f.v:f.v}</span></div><div class="bt" style="height:18px"><div style="height:100%;width:${typeof f.v==='number'?f.v/tT*100:8}%;background:${f.c};border-radius:5px;opacity:${1-i*.2}"></div></div></div>`).join('');
+
+  const tL=K.filter(k=>k.ot>0).length,pL=new Set(Object.values(PR).flatMap(p=>p.kols)).size;
+  document.getElementById('realC').innerHTML=`<div style="display:flex;flex-direction:column;gap:6px">
+<div style="padding:8px;background:var(--bg3);border-radius:6px"><div style="font-size:10px;margin-bottom:2px">📝 推文层 <span class="st st-a">已实现</span></div><div style="font-size:9px;color:var(--tx2)">${tL} KOL有推文</div></div>
+<div style="padding:8px;background:var(--bg3);border-radius:6px"><div style="font-size:10px;margin-bottom:2px">🛠 产品层 <span class="st st-a">已实现</span></div><div style="font-size:9px;color:var(--tx2)">${pL} KOL提及产品</div></div>
+<div style="padding:8px;background:var(--bg3);border-radius:6px"><div style="font-size:10px;margin-bottom:2px">🔗 链上层 <span class="st st-w">待接入</span></div><div style="font-size:9px;color:var(--tx2)">需钱包地址+Dune API</div></div>
+<div style="padding:8px;background:var(--bg3);border-radius:6px"><div style="font-size:10px;margin-bottom:2px">📊 UID层 <span class="st st-d">待打通</span></div><div style="font-size:9px;color:var(--tx2)">需UID→拉新/手续费/FTT/策略交易/理财</div></div></div>`;
+
+  document.getElementById('roiC').innerHTML=`<div style="text-align:center;padding:16px 0"><div style="font-size:32px;font-weight:700;color:var(--acc);font-family:'JetBrains Mono'">${fmt(K.reduce((s,k)=>s+k.oi,0))}</div><div style="font-size:10px;color:var(--tx3);margin-top:3px">总OKX曝光</div></div><div style="font-size:9px;color:var(--tx2);padding:8px;background:var(--bg3);border-radius:6px">💡 ROI = 合作费用 / 曝光量<br>待接入：钱包地址→链上行为<br>待接入：UID→拉新/手续费/产品使用</div>`;
+
+  const kp={};K.forEach(k=>{if(k.ot>0)kp[k.h]={...k,pc:k.prods.length}});
+  const sp=Object.values(kp).sort((a,b)=>b.pc-a.pc);
+  document.getElementById('penTbl').innerHTML=`<table class="tbl"><thead><tr><th>KOL</th><th>产品数</th><th>提及产品</th><th>曝光</th><th>真实度</th></tr></thead><tbody>${sp.slice(0,35).map(k=>`<tr><td>${lnk(k.h)}</td><td style="color:var(--acc);font-weight:600">${k.pc}</td><td style="font-size:8px">${k.prods.join('/')|| '仅品牌'}</td><td>${fmt(k.oi)}</td><td>${k.pc>=2?'<span class="st st-a">高</span>':k.pc===1?'<span class="st st-w">中</span>':'<span class="st st-d">低</span>'}</td></tr>`).join('')}</tbody></table>`;
+}
+
+// === AI (offline engine) ===
+async function callAI(action, data, elId){
+  const el=document.getElementById(elId);el.innerHTML='<div class="al">🤖 AI 分析中，请稍候...</div>';
+  try{
+    const resp=await fetch('/api/index',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action,data})});
+    const j=await resp.json();
+    el.innerHTML=`<div class="ar">${j.result||'无结果'}</div>`;
+  }catch(e){
+    // Fallback to local analysis if API fails
+    el.innerHTML='<div class="al">⚠️ API连接失败，使用本地分析...</div>';
+    setTimeout(()=>localAI(action,elId),300);
+  }
+}
+function localAI(action,elId){
+  const el=document.getElementById(elId);
+  if(action==='builder'){
+    const good=K.filter(k=>k.score>=60).sort((a,b)=>b.score-a.score),bad=K.filter(k=>k.score<35).sort((a,b)=>a.score-b.score),warn=K.filter(k=>k.score>=35&&k.score<60);
+    let r=`📋 Builder 绩效分析 (${K.length}人)\n\n✅ 达标 ${good.length}人 (${pct(good.length,K.length)}):\n`;
+    good.slice(0,5).forEach(k=>r+=`  @${k.h}: ${k.score}分 · OKX${k.ot}条/${fmt(k.oi)} · ${k.prods.length}产品\n`);
+    r+=`\n⚠️ 观察 ${warn.length}人:\n`;warn.slice(0,5).forEach(k=>r+=`  @${k.h}: ${k.score}分 · OKX${k.ot}条 · ${k.bt>k.ot*2?'BN偏向':'产出偏低'}\n`);
+    r+=`\n🔴 建议淘汰 ${bad.length}人:\n`;bad.slice(0,5).forEach(k=>r+=`  @${k.h}: ${k.score}分 · OKX${k.ot}条 · ${k.ot===0?'零产出':k.bt>k.ot*3?'重度BN偏向':'曝光不足'}\n`);
+    r+=`\n💡 建议: 从「发现」Tab的BN高权重未合作KOL中选择替补`;
+    el.innerHTML=`<div class="ar">${r}</div>`;
+  }else if(action==='discover'){
+    const cands=NP.sort((a,b)=>(b.oi+b.bi)-(a.oi+a.bi)).slice(0,5);
+    let r='🔭 非合作KOL推荐 TOP5:\n\n';
+    cands.forEach((k,i)=>{r+=`${i+1}. @${k.h} OKX${k.ot}条/${fmt(k.oi)} | BN${k.bt}条/${fmt(k.bi)} | ${k.tags.join('、')}\n   🤝 BD: ${k.bd.split(' ')[0]}\n\n`});
+    el.innerHTML=`<div class="ar">${r}</div>`;
+  }else if(action==='orbit'){
+    const allH=K.filter(k=>k.ot>=1).length,joined=Object.values(OS).filter(v=>v==='joined').length,rate=allH?(joined/allH*100).toFixed(0):0;
+    el.innerHTML=`<div class="ar">🪐 Orbit策略 (入驻率${rate}%)\n\n📨 催促话术:\n"Orbit星球是本季度重点，入驻即享专属权益。"\n\n📈 提升方案:\n1. TOP3额外奖金\n2. 提供素材包\n3. 合作条款嵌入</div>`;
+  }else if(action==='conv'){
+    let r='📊 转化分析:\n\n';
+    Object.entries(PR).sort((a,b)=>b[1].count-a[1].count).slice(0,5).forEach(([n,d])=>{r+=`${n}: ${d.count}条/${d.kols.length}KOL\n`});
+    r+='\n💡 建议: 推文附截图证明+UTM链接追踪';
+    el.innerHTML=`<div class="ar">${r}</div>`;
+  }
+}
+
+function aiBuilder(){
+  const good=K.filter(k=>k.score>=60),bad=K.filter(k=>k.score<35),warn=K.filter(k=>k.score>=35&&k.score<60);
+  callAI('builder',{total:K.length,good:good.length,warn:warn.length,bad:bad.length,
+    topGood:good.sort((a,b)=>b.score-a.score).slice(0,5).map(k=>`@${k.h}(${k.score}分,OKX${k.ot}条/${fmt(k.oi)})`).join('; '),
+    topBad:bad.sort((a,b)=>a.score-b.score).slice(0,5).map(k=>`@${k.h}(${k.score}分,OKX${k.ot}条,BN${k.bt}条,费用${k.cost}U)`).join('; ')
+  },'aiB');
+}
+function aiDiscover(){
+  const cands=NP.sort((a,b)=>(b.oi+b.bi)-(a.oi+a.bi)).slice(0,10);
+  callAI('discover',{candidates:cands.map(k=>`@${k.h}: OKX${k.ot}条/${fmt(k.oi)}曝光, BN${k.bt}条/${fmt(k.bi)}曝光, 赛道:${k.tags.join('/')}, BD:${k.bd}`).join('\n')},'aiD');
+}
+function aiOrbit(){
+  const allH=K.filter(k=>k.ot>=1).length,joined=Object.values(OS).filter(v=>v==='joined').length;
+  callAI('orbit',{rate:allH?(joined/allH*100).toFixed(0)+'%':'0%',active:allH,joined},'aiO');
+}
+function aiConv(){
+  callAI('conv',{products:Object.entries(PR).sort((a,b)=>b[1].count-a[1].count).map(([n,d])=>`${n}: ${d.count}条推文, ${fmt(d.imp)}曝光, ${d.kols.length}个KOL`).join('\n')},'aiC');
+}
+
+// === Push ===
+async function pushFeishu(){
+  const ot=K.reduce((s,k)=>s+k.ot,0),oi=K.reduce((s,k)=>s+k.oi,0),bt_=K.reduce((s,k)=>s+k.bt,0);
+  const text=`📊 Builder Eye周报(03-30~04-05)\n\nKOL:${K.length} | OKX:${ot}条/${fmt(oi)} | BN:${bt_}条\n绩效达标:${K.filter(k=>k.score>=60).length}/${K.length}\nOrbit入驻:${Object.values(OS).filter(v=>v==='joined').length}\n\nTOP5:\n${[...K].sort((a,b)=>b.oi-a.oi).slice(0,5).map((k,i)=>`${i+1}.@${k.h} ${k.ot}条/${fmt(k.oi)}`).join('\n')}`;
+  try{await navigator.clipboard.writeText(text);toast('📋 周报已复制到剪贴板！')}catch(e){toast('⚠️ 复制失败')}
+}
+async function pushOrbit(){
+  const un=K.filter(k=>k.ot>=1&&(OS[k.h.toLowerCase()]||'')!=='joined').map(k=>k.h);
+  const text=`🪐 Orbit未入驻(${un.length}人):\n${un.slice(0,15).map(h=>'@'+h).join('\n')}`;
+  try{await navigator.clipboard.writeText(text);toast('📋 已复制，粘贴到飞书群')}catch(e){toast('⚠️ 复制失败')}
+}
+
+function cM(){document.getElementById('mOv').classList.remove('show')}
+function toast(m){const t=document.getElementById('toast');t.textContent=m;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),3000)}
+
+init();
+</script>
+</body>
+</html>
